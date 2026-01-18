@@ -1,192 +1,83 @@
-# Solar Radiation Data Pipeline - Deinze
+# Solar Pipeline
 
-Data pipeline voor het ophalen en opslaan van zonne-instralingsdata van tutiempo.net voor Deinze.
+Beginner-friendly solar forecast → energy estimate → battery charge prognosis.
 
-## Setup
+This project downloads a 15‑day solar radiation forecast (kWh/m²), estimates how much energy your solar panels could produce (kWh), then estimates how much of that could charge your batteries.
 
-1. **Installeer Python 3.11 of hoger**
+## Project Overview
+- Pulls solar radiation forecast (daily + hourly) from tutiempo.net.
+- Calculates per-panel and total system yield, plus chargeable energy for your batteries.
+- Lets you change key numbers (panel count, efficiency from datasheet, battery count/capacity) in one place or via a GUI form.
 
-2. **Installeer dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
 
-## Versies Overzicht
+## Installation / Setup
+1) Install Python 3.8+
+2) Install dependencies (run in this project folder):
 
-### V0 - Proof of Concept
-**Doel:** Bewijzen dat data automatisch opgehaald kan worden.
-
-**Wat het doet:**
-- Downloadt HTML pagina van tutiempo.net
-- Zoekt naar solar radiation data in tabellen
-- Print structuur naar console voor debugging
-
-**Gebruik:**
 ```bash
-python v0_scraper.py
+pip install -r requirements.txt
 ```
 
----
+## Start / Run Commands
+Run the pipeline (downloads forecast + exports CSVs):
 
-### V1 - Daily Scraper + Opslag
-**Doel:** Stabiele datacollectie met retries, logging en CSV opslag.
-
-**Wat het doet:**
-- ✅ Auto-detectie van URL (zoekt automatisch naar juiste pagina)
-- ✅ Downloadt HTML met retry logica (max 3 pogingen)
-- ✅ Extract dagelijkse solar radiation waarde
-- ✅ Slaat data op in CSV (`data/raw/solar_deinze.csv`)
-- ✅ Voorkomt duplicaten (geen dubbele datums)
-- ✅ Logging naar console en `solar_scraper.log`
-
-**Gebruik:**
 ```bash
-python v1_scraper.py
+python main.py
 ```
 
-**Output:**
-- CSV: `data/raw/solar_deinze.csv`
-- Log: `solar_scraper.log`
+Open the GUI (edit settings + re-run + view results):
 
-**Data structuur:**
-```csv
-Date,SolarRadiation_kWh_m2,Source,FetchedAt
-2026-01-18,1.166,tutiempo.net,2026-01-18 00:07:50
-```
-
----
-
-### V2 - Detailed Forecast Scraper ⭐ (Huidige versie)
-**Doel:** Extract 15-day forecast met dagelijkse totalen en uurlijkse breakdowns.
-
-**Wat het doet:**
-- ✅ Auto-detectie van URL (zoekt automatisch naar juiste pagina)
-- ✅ Downloadt HTML met retry logica
-- ✅ Extract **15 dagen** forecast data
-- ✅ Extract **dagelijkse totalen** (kWh/m² en Wh/m²)
-- ✅ Extract **uurlijkse breakdowns** (W/m² per uur)
-- ✅ Extract sunrise/sunset tijden (werk in uitvoering)
-- ✅ Slaat data op in **2 CSV bestanden**:
-  - `solar_daily_summary.csv` - Dagelijkse totalen
-  - `solar_hourly_detail.csv` - Uurlijkse details
-- ✅ Voorkomt duplicaten (Date voor daily, Date+Time voor hourly)
-- ✅ Logging naar console en `solar_scraper.log`
-
-**Gebruik:**
 ```bash
-python v2_scraper.py
+python -c "from gui.viewer import launch_gui; launch_gui()"
 ```
 
-**Output:**
-- CSV: `data/raw/solar_daily_summary.csv` (dagelijkse totalen)
-- CSV: `data/raw/solar_hourly_detail.csv` (uurlijkse details)
-- Log: `solar_scraper.log`
+## Configuration (what you can change and why)
+All user settings live in `config.yaml` (or use the GUI form). You only change numbers here — no code changes needed.
+- `solar_panel.count` — number of panels.
+- `solar_panel.efficiency` — **Research your panel model and get the exact efficiency from the manufacturer datasheet** (look for "Module Efficiency" at STC conditions). Enter as decimal (0.20 = 20%) or percentage (20).
+- `solar_panel.area_per_panel_m2` — size of one panel.
+- `battery.count` — how many batteries.
+- `battery.capacity_kwh_per_battery` — storage per battery (kWh).
+- `battery.max_charge_rate_kw_per_battery` — charge speed per battery (kW).
+- `system.efficiency` — inverter/wiring efficiency (fraction).
 
-**Data structuur:**
+## Prognosis / Calculations (with math examples)
+### Key ideas (plain language)
+- Solar radiation is shown as **kWh per square meter** (kWh/m²).
+- Your panels turn a fraction of that sunlight into electricity (efficiency).
+- More panels → more total area → more energy.
+- Batteries have a total storage limit (kWh) and a maximum charge speed (kW).
 
-**Daily Summary:**
-```csv
-Date,DayName,SolarRadiation_kWh_m2,SolarRadiation_Wh_m2,Sunrise,Sunset,Source,FetchedAt
-2026-01-18,Today,1.166,1166.0,08:42,17:10,tutiempo.net,2026-01-18 00:08:52
-```
+### Formulas (per day)
+- Per-panel yield: $$Y_{panel} = R_{kWh/m^2} \times A_{panel} \times \eta_{panel} \times \eta_{system}$$
+- Total yield (all panels): $$Y_{total} = Y_{panel} \times N_{panels}$$
+- Battery capacity (all batteries): $$C_{batt} = C_{one} \times N_{batt}$$
+- Max chargeable energy (8h charge window): $$E_{charge} = \min\big(C_{batt},\ (P_{rate\_one} \times N_{batt}) \times 8,\ Y_{total}\big)$$
+- Charge percent: $$\text{Charge\%} = \frac{E_{charge}}{C_{batt}} \times 100$$
 
-**Hourly Detail:**
-```csv
-Date,Time,SolarRadiation_W_m2,SolarRadiation_Wh_m2,Source,FetchedAt
-2026-01-18,09:00,4.0,4.0,tutiempo.net,2026-01-18 00:08:52
-2026-01-18,10:00,61.0,61.0,tutiempo.net,2026-01-18 00:08:52
-```
+Also:
+- Battery storage total: $$\text{Storage}_{total} = \text{capacity\_kwh\_per\_battery} \times N_{batt}$$
+
 
 ---
 
-### V3 - Battery Prognosis 🔋 (Huidige versie)
-**Doel:** Voorspel batterijprestatie op basis van solar radiation forecast.
+Worked example (defaults in `config.yaml`):
+- Panels: `N_panels = 8`, `A_panel = 1.8 m²`, `η_panel = 0.20` (20% from datasheet), `η_system = 0.85`.
+- Batteries: `N_batt = 1`, `C_one = 10 kWh`, `P_rate_one = 5 kW`.
+- Forecast for the day: `R = 1.10 kWh/m²`.
+- Per-panel yield: $$Y_{panel} = 1.10 \times 1.8 \times 0.20 \times 0.85 \approx 0.3366\ \text{kWh}$$
+- Total yield: $$Y_{total} = 0.3366 \times 8 \approx 2.6928\ \text{kWh}$$
+- Battery capacity: $$C_{batt} = 10\ \text{kWh}$$
+- Chargeable: $$E_{charge} = \min(10,\ 5 \times 8,\ 2.6928) = 2.6928\ \text{kWh}$$
+- Charge %: $$\text{Charge\%} = 2.6928 / 10 \times 100 \approx 26.9\%$$
 
-**Wat het doet:**
-- ✅ Leest solar radiation forecast data (uit V2)
-- ✅ Simuleer batterijgedrag (charge/discharge cycles)
-- ✅ Genereer 15-day prognosis met batterij state-of-charge
-- ✅ Output naar CSV (`data/processed/battery_prognosis.csv`)
-- ✅ Configureerbare batterij parameters (capaciteit, efficiëntie, etc.)
-- ✅ Logging naar console en `solar_scraper.log`
+What to tweak to see different outcomes:
+- Change `count` for panels or batteries to model larger/smaller systems.
+- Adjust `capacity_kwh_per_battery` and `max_charge_rate_kw_per_battery` to explore storage and charge-speed limits.
+- Update `efficiency` to match your exact panel datasheet value.
 
-**Gebruik:**
-```bash
-python v3_battery_prognosis.py
-```
+## Outputs
+- `data/exports/daily_forecast.csv` — daily solar radiation forecast.
+- `data/exports/hourly_detail.csv` — hourly solar radiation.
+- `data/exports/battery_prognosis.csv` — includes panel/battery counts, per-panel yield, total yield, chargeable energy, and charge %.
 
-**Output:**
-- CSV: `data/processed/battery_prognosis.csv`
-- Log: `solar_scraper.log`
-
-**Data structuur:**
-```csv
-Date,DayName,SolarRadiation_kWh_m2,ChargeEnergy_kWh,DischargeEnergy_kWh,BatterySOC_percent,BatteryEnergy_kWh,Status
-2026-01-18,Today,1.166,0.95,0.50,75.0,7.5,Charging
-```
-
----
-
-## Mogelijke Toekomstige Verbeteringen
-
-**Functionaliteit:**
-- 📊 Data visualisatie (grafieken, trends)
-- 📊 Statistieken en analyses (gemiddelden, pieken, etc.)
-- 📊 Export naar andere formaten (JSON, Excel)
-- 📊 Database integratie (SQLite, PostgreSQL)
-
-**Automatisatie:**
-- ⏰ Scheduled runs (cron jobs, Windows Task Scheduler)
-- ⏰ Email notificaties bij errors
-- ⏰ API endpoint voor data access
-
-**Robuustheid:**
-- 🛡️ Betere error handling
-- 🛡️ Rate limiting en respect voor robots.txt
-- 🛡️ Data validatie en quality checks
-
-**Code Kwaliteit:**
-- 🧹 Unit tests
-- 🧹 Type hints en documentatie
-- 🧹 Configuration file (YAML/JSON) voor instellingen
-
----
-
-## Project Structuur
-
-```
-Solar/
-├── v0_scraper.py                              # V0 proof of concept
-├── v1_scraper.py                              # V1 daily scraper
-├── v2_scraper.py                              # V2 detailed forecast scraper
-├── v3_battery_prognosis.py                    # V3 battery prognosis ⭐
-├── requirements.txt                            # Python dependencies
-├── README.md                                   # Deze file
-├── solar_scraper.log                           # Log bestand
-├── data/
-│   ├── raw/
-│   │   ├── solar_deinze.csv                   # V1 output
-│   │   ├── solar_daily_summary.csv            # V2 daily output
-│   │   └── solar_hourly_detail.csv            # V2 hourly output
-│   └── processed/
-│       └── battery_prognosis.csv              # V3 output
-└── solar_radiation_data_pipeline_low_resource_plan.md
-```
-
----
-
-## Juridische Nota
-
-- Controleer `robots.txt` van tutiempo.net
-- Beperk requests tot 1× per dag
-- Gebruik respectvolle scraping praktijken
-- Respecteer rate limits en server resources
-
----
-
-## Dependencies
-
-Zie `requirements.txt` voor volledige lijst. Belangrijkste:
-- `requests` - HTTP requests
-- `beautifulsoup4` - HTML parsing
-- `pandas` - Data manipulatie en CSV opslag

@@ -1,0 +1,16 @@
+location: Deinze
+base_url: https://en.tutiempo.net
+fallback_url: https://en.tutiempo.net/solar-radiation/deinze.html
+max_retries: 3
+retry_delay: 2
+timeout: 10
+solar_panel:
+  count: 7
+  efficiency: 0.2
+  area_per_panel_m2: 1.8
+system:
+  efficiency: 0.85
+battery:
+  count: 1
+  capacity_kwh_per_battery: 10.0
+  max_charge_rate_kw_per_battery: 5.0

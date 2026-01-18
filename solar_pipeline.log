@@ -1,0 +1,243 @@
+2026-01-18 16:38:19,051 - INFO - ============================================================
+2026-01-18 16:38:19,051 - INFO - SOLAR PIPELINE - COMPLETE WORKFLOW
+2026-01-18 16:38:19,051 - INFO - ============================================================
+2026-01-18 16:38:19,051 - INFO - Finding URL for Deinze
+2026-01-18 16:38:19,051 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/1)
+2026-01-18 16:38:19,677 - INFO - Success (86162 bytes)
+2026-01-18 16:38:19,678 - INFO - Found: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 16:38:19,678 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/3)
+2026-01-18 16:38:20,007 - INFO - Success (86162 bytes)
+2026-01-18 16:38:20,023 - INFO - Found 15 daily totals
+2026-01-18 16:38:20,027 - INFO - Extracted 15 daily and 828 hourly records
+2026-01-18 16:38:20,030 - INFO - Saved 15 records to daily_forecast.csv
+2026-01-18 16:38:20,033 - INFO - Saved 828 records to hourly_detail.csv
+2026-01-18 16:38:20,033 - INFO - Saved 15 records to battery_prognosis.csv
+2026-01-18 16:38:20,034 - INFO - 
+Battery Charge Prognosis (first 7 days):
+2026-01-18 16:38:20,034 - INFO - ------------------------------------------------------------
+2026-01-18 16:38:20,034 - INFO - 2026-01-18: 1.120 kWh/m2 -> 19.0% charge
+2026-01-18 16:38:20,034 - INFO - 2026-01-18: 1.102 kWh/m2 -> 18.7% charge
+2026-01-18 16:38:20,034 - INFO - 2026-01-18: 1.317 kWh/m2 -> 22.4% charge
+2026-01-18 16:38:20,034 - INFO - 2026-01-18: 0.806 kWh/m2 -> 13.7% charge
+2026-01-18 16:38:20,034 - INFO - 2026-01-18: 0.786 kWh/m2 -> 13.4% charge
+2026-01-18 16:38:20,034 - INFO - 2026-01-18: 0.744 kWh/m2 -> 12.7% charge
+2026-01-18 16:38:20,034 - INFO - 2026-01-18: 1.040 kWh/m2 -> 17.7% charge
+2026-01-18 16:38:20,034 - INFO - ============================================================
+2026-01-18 16:38:20,034 - INFO - PIPELINE COMPLETED
+2026-01-18 16:38:20,035 - INFO - ============================================================
+2026-01-18 17:12:29,001 - INFO - ============================================================
+2026-01-18 17:12:29,001 - INFO - SOLAR PIPELINE - COMPLETE WORKFLOW
+2026-01-18 17:12:29,001 - INFO - ============================================================
+2026-01-18 17:12:29,001 - INFO - Finding URL for Deinze
+2026-01-18 17:12:29,001 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/1)
+2026-01-18 17:12:29,699 - INFO - Success (86162 bytes)
+2026-01-18 17:12:29,700 - INFO - Found: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 17:12:29,701 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/3)
+2026-01-18 17:12:30,053 - INFO - Success (86162 bytes)
+2026-01-18 17:12:30,070 - INFO - Found 15 daily totals
+2026-01-18 17:12:30,075 - INFO - Extracted 15 daily and 828 hourly records
+2026-01-18 17:12:30,079 - INFO - Saved 15 records to daily_forecast.csv
+2026-01-18 17:12:30,081 - INFO - Saved 828 records to hourly_detail.csv
+2026-01-18 17:12:30,083 - INFO - Saved 15 records to battery_prognosis.csv
+2026-01-18 17:12:30,083 - INFO - 
+Battery Charge Prognosis (first 7 days):
+2026-01-18 17:12:30,083 - INFO - ------------------------------------------------------------
+2026-01-18 17:12:30,084 - INFO - 2026-01-18: 1.120 kWh/m2 -> 27.4% charge
+2026-01-18 17:12:30,084 - INFO - 2026-01-18: 1.102 kWh/m2 -> 27.0% charge
+2026-01-18 17:12:30,084 - INFO - 2026-01-18: 1.317 kWh/m2 -> 32.2% charge
+2026-01-18 17:12:30,084 - INFO - 2026-01-18: 0.806 kWh/m2 -> 19.7% charge
+2026-01-18 17:12:30,084 - INFO - 2026-01-18: 0.786 kWh/m2 -> 19.2% charge
+2026-01-18 17:12:30,084 - INFO - 2026-01-18: 0.744 kWh/m2 -> 18.2% charge
+2026-01-18 17:12:30,084 - INFO - 2026-01-18: 1.040 kWh/m2 -> 25.5% charge
+2026-01-18 17:12:30,084 - INFO - ============================================================
+2026-01-18 17:12:30,084 - INFO - PIPELINE COMPLETED
+2026-01-18 17:12:30,084 - INFO - ============================================================
+2026-01-18 17:32:07,269 - INFO - ============================================================
+2026-01-18 17:32:07,269 - INFO - SOLAR PIPELINE - COMPLETE WORKFLOW
+2026-01-18 17:32:07,269 - INFO - ============================================================
+2026-01-18 17:32:07,269 - INFO - Finding URL for Deinze
+2026-01-18 17:32:07,269 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/1)
+2026-01-18 17:32:08,016 - INFO - Success (86162 bytes)
+2026-01-18 17:32:08,017 - INFO - Found: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 17:32:08,017 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/3)
+2026-01-18 17:32:08,364 - INFO - Success (86162 bytes)
+2026-01-18 17:32:08,381 - INFO - Found 15 daily totals
+2026-01-18 17:32:08,388 - INFO - Extracted 15 daily and 828 hourly records
+2026-01-18 17:32:08,392 - INFO - Saved 15 records to daily_forecast.csv
+2026-01-18 17:32:08,395 - INFO - Saved 828 records to hourly_detail.csv
+2026-01-18 17:32:08,397 - INFO - Saved 15 records to battery_prognosis.csv
+2026-01-18 17:32:08,397 - INFO - 
+Battery Charge Prognosis (first 7 days):
+2026-01-18 17:32:08,397 - INFO - ------------------------------------------------------------
+2026-01-18 17:32:08,397 - INFO - 2026-01-18: 1.120 kWh/m2 -> 27.4% charge
+2026-01-18 17:32:08,397 - INFO - 2026-01-18: 1.102 kWh/m2 -> 27.0% charge
+2026-01-18 17:32:08,398 - INFO - 2026-01-18: 1.317 kWh/m2 -> 32.2% charge
+2026-01-18 17:32:08,398 - INFO - 2026-01-18: 0.806 kWh/m2 -> 19.7% charge
+2026-01-18 17:32:08,398 - INFO - 2026-01-18: 0.786 kWh/m2 -> 19.2% charge
+2026-01-18 17:32:08,398 - INFO - 2026-01-18: 0.744 kWh/m2 -> 18.2% charge
+2026-01-18 17:32:08,398 - INFO - 2026-01-18: 1.040 kWh/m2 -> 25.5% charge
+2026-01-18 17:32:08,398 - INFO - ============================================================
+2026-01-18 17:32:08,398 - INFO - PIPELINE COMPLETED
+2026-01-18 17:32:08,398 - INFO - ============================================================
+2026-01-18 17:36:37,888 - INFO - ============================================================
+2026-01-18 17:36:37,888 - INFO - SOLAR PIPELINE - COMPLETE WORKFLOW
+2026-01-18 17:36:37,888 - INFO - ============================================================
+2026-01-18 17:36:37,888 - INFO - Finding URL for Deinze
+2026-01-18 17:36:37,888 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/1)
+2026-01-18 17:36:38,505 - INFO - Success (86162 bytes)
+2026-01-18 17:36:38,507 - INFO - Found: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 17:36:38,507 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/3)
+2026-01-18 17:36:38,855 - INFO - Success (86162 bytes)
+2026-01-18 17:36:38,873 - INFO - Found 15 daily totals
+2026-01-18 17:36:38,878 - INFO - Extracted 15 daily and 828 hourly records
+2026-01-18 17:36:38,881 - INFO - Saved 15 records to daily_forecast.csv
+2026-01-18 17:36:38,884 - INFO - Saved 828 records to hourly_detail.csv
+2026-01-18 17:36:38,885 - INFO - Saved 15 records to battery_prognosis.csv
+2026-01-18 17:36:38,885 - INFO - 
+Battery Charge Prognosis (first 7 days):
+2026-01-18 17:36:38,885 - INFO - ------------------------------------------------------------
+2026-01-18 17:36:38,885 - INFO - 2026-01-18: 1.120 kWh/m2 -> 27.4% charge
+2026-01-18 17:36:38,885 - INFO - 2026-01-18: 1.102 kWh/m2 -> 27.0% charge
+2026-01-18 17:36:38,885 - INFO - 2026-01-18: 1.317 kWh/m2 -> 32.2% charge
+2026-01-18 17:36:38,885 - INFO - 2026-01-18: 0.806 kWh/m2 -> 19.7% charge
+2026-01-18 17:36:38,886 - INFO - 2026-01-18: 0.786 kWh/m2 -> 19.2% charge
+2026-01-18 17:36:38,886 - INFO - 2026-01-18: 0.744 kWh/m2 -> 18.2% charge
+2026-01-18 17:36:38,886 - INFO - 2026-01-18: 1.040 kWh/m2 -> 25.5% charge
+2026-01-18 17:36:38,886 - INFO - ============================================================
+2026-01-18 17:36:38,886 - INFO - PIPELINE COMPLETED
+2026-01-18 17:36:38,886 - INFO - ============================================================
+2026-01-18 17:37:26,015 - INFO - ============================================================
+2026-01-18 17:37:26,015 - INFO - SOLAR PIPELINE - COMPLETE WORKFLOW
+2026-01-18 17:37:26,015 - INFO - ============================================================
+2026-01-18 17:37:26,016 - INFO - Finding URL for Deinze
+2026-01-18 17:37:26,016 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/1)
+2026-01-18 17:37:26,368 - INFO - Success (86162 bytes)
+2026-01-18 17:37:26,370 - INFO - Found: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 17:37:26,370 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/3)
+2026-01-18 17:37:26,707 - INFO - Success (86162 bytes)
+2026-01-18 17:37:26,722 - INFO - Found 15 daily totals
+2026-01-18 17:37:26,726 - INFO - Extracted 15 daily and 828 hourly records
+2026-01-18 17:37:26,727 - INFO - Saved 15 records to daily_forecast.csv
+2026-01-18 17:37:26,729 - INFO - Saved 828 records to hourly_detail.csv
+2026-01-18 17:37:26,730 - INFO - Saved 15 records to battery_prognosis.csv
+2026-01-18 17:37:26,730 - INFO - 
+Battery Charge Prognosis (first 7 days):
+2026-01-18 17:37:26,730 - INFO - ------------------------------------------------------------
+2026-01-18 17:37:26,730 - INFO - 2026-01-18: 1.120 kWh/m2 -> 27.4% charge
+2026-01-18 17:37:26,730 - INFO - 2026-01-18: 1.102 kWh/m2 -> 27.0% charge
+2026-01-18 17:37:26,730 - INFO - 2026-01-18: 1.317 kWh/m2 -> 32.2% charge
+2026-01-18 17:37:26,730 - INFO - 2026-01-18: 0.806 kWh/m2 -> 19.7% charge
+2026-01-18 17:37:26,731 - INFO - 2026-01-18: 0.786 kWh/m2 -> 19.2% charge
+2026-01-18 17:37:26,731 - INFO - 2026-01-18: 0.744 kWh/m2 -> 18.2% charge
+2026-01-18 17:37:26,731 - INFO - 2026-01-18: 1.040 kWh/m2 -> 25.5% charge
+2026-01-18 17:37:26,731 - INFO - ============================================================
+2026-01-18 17:37:26,731 - INFO - PIPELINE COMPLETED
+2026-01-18 17:37:26,731 - INFO - ============================================================
+2026-01-18 17:37:37,358 - INFO - ============================================================
+2026-01-18 17:37:37,359 - INFO - SOLAR PIPELINE - COMPLETE WORKFLOW
+2026-01-18 17:37:37,359 - INFO - ============================================================
+2026-01-18 17:37:37,359 - INFO - Finding URL for Deinze
+2026-01-18 17:37:37,359 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/1)
+2026-01-18 17:37:38,007 - INFO - Success (86162 bytes)
+2026-01-18 17:37:38,008 - INFO - Found: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 17:37:38,008 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/3)
+2026-01-18 17:37:38,345 - INFO - Success (86162 bytes)
+2026-01-18 17:37:38,359 - INFO - Found 15 daily totals
+2026-01-18 17:37:38,363 - INFO - Extracted 15 daily and 828 hourly records
+2026-01-18 17:37:38,365 - INFO - Saved 15 records to daily_forecast.csv
+2026-01-18 17:37:38,367 - INFO - Saved 828 records to hourly_detail.csv
+2026-01-18 17:37:38,368 - INFO - Saved 15 records to battery_prognosis.csv
+2026-01-18 17:37:38,368 - INFO - 
+Battery Charge Prognosis (first 7 days):
+2026-01-18 17:37:38,368 - INFO - ------------------------------------------------------------
+2026-01-18 17:37:38,368 - INFO - 2026-01-18: 1.120 kWh/m2 -> 24.0% charge
+2026-01-18 17:37:38,368 - INFO - 2026-01-18: 1.102 kWh/m2 -> 23.6% charge
+2026-01-18 17:37:38,368 - INFO - 2026-01-18: 1.317 kWh/m2 -> 28.2% charge
+2026-01-18 17:37:38,368 - INFO - 2026-01-18: 0.806 kWh/m2 -> 17.3% charge
+2026-01-18 17:37:38,368 - INFO - 2026-01-18: 0.786 kWh/m2 -> 16.8% charge
+2026-01-18 17:37:38,368 - INFO - 2026-01-18: 0.744 kWh/m2 -> 15.9% charge
+2026-01-18 17:37:38,368 - INFO - 2026-01-18: 1.040 kWh/m2 -> 22.3% charge
+2026-01-18 17:37:38,368 - INFO - ============================================================
+2026-01-18 17:37:38,368 - INFO - PIPELINE COMPLETED
+2026-01-18 17:37:38,368 - INFO - ============================================================
+2026-01-18 17:52:38,554 - INFO - ============================================================
+2026-01-18 17:52:38,554 - INFO - SOLAR PIPELINE - COMPLETE WORKFLOW
+2026-01-18 17:52:38,554 - INFO - ============================================================
+2026-01-18 17:52:38,554 - INFO - Finding URL for Deinze
+2026-01-18 17:52:38,554 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/1)
+2026-01-18 17:52:39,218 - INFO - Success (86162 bytes)
+2026-01-18 17:52:39,220 - INFO - Found: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 17:52:39,220 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/3)
+2026-01-18 17:52:39,553 - INFO - Success (86162 bytes)
+2026-01-18 17:52:39,568 - INFO - Found 15 daily totals
+2026-01-18 17:52:39,573 - INFO - Extracted 15 daily and 828 hourly records
+2026-01-18 17:52:39,575 - INFO - Saved 15 records to daily_forecast.csv
+2026-01-18 17:52:39,577 - INFO - Saved 828 records to hourly_detail.csv
+2026-01-18 17:52:39,578 - INFO - Saved 15 records to battery_prognosis.csv
+2026-01-18 17:52:39,578 - INFO - 
+Battery Charge Prognosis (first 7 days):
+2026-01-18 17:52:39,578 - INFO - ------------------------------------------------------------
+2026-01-18 17:52:39,578 - INFO - 2026-01-18: 1.120 kWh/m2 -> 24.0% charge
+2026-01-18 17:52:39,578 - INFO - 2026-01-18: 1.102 kWh/m2 -> 23.6% charge
+2026-01-18 17:52:39,579 - INFO - 2026-01-18: 1.317 kWh/m2 -> 28.2% charge
+2026-01-18 17:52:39,579 - INFO - 2026-01-18: 0.806 kWh/m2 -> 17.3% charge
+2026-01-18 17:52:39,579 - INFO - 2026-01-18: 0.786 kWh/m2 -> 16.8% charge
+2026-01-18 17:52:39,579 - INFO - 2026-01-18: 0.744 kWh/m2 -> 15.9% charge
+2026-01-18 17:52:39,579 - INFO - 2026-01-18: 1.040 kWh/m2 -> 22.3% charge
+2026-01-18 17:52:39,579 - INFO - ============================================================
+2026-01-18 17:52:39,579 - INFO - PIPELINE COMPLETED
+2026-01-18 17:52:39,579 - INFO - ============================================================
+2026-01-18 18:00:29,079 - INFO - ============================================================
+2026-01-18 18:00:29,079 - INFO - SOLAR PIPELINE - COMPLETE WORKFLOW
+2026-01-18 18:00:29,079 - INFO - ============================================================
+2026-01-18 18:00:29,079 - INFO - Finding URL for Deinze
+2026-01-18 18:00:29,079 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/1)
+2026-01-18 18:00:29,788 - INFO - Success (86162 bytes)
+2026-01-18 18:00:29,789 - INFO - Found: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 18:00:29,789 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/3)
+2026-01-18 18:00:30,118 - INFO - Success (86162 bytes)
+2026-01-18 18:00:30,134 - INFO - Found 15 daily totals
+2026-01-18 18:00:30,138 - INFO - Extracted 15 daily and 828 hourly records
+2026-01-18 18:00:30,140 - INFO - Saved 15 records to daily_forecast.csv
+2026-01-18 18:00:30,143 - INFO - Saved 828 records to hourly_detail.csv
+2026-01-18 18:00:30,144 - INFO - Saved 15 records to battery_prognosis.csv
+2026-01-18 18:00:30,144 - INFO - 
+Battery Charge Prognosis (first 7 days):
+2026-01-18 18:00:30,144 - INFO - ------------------------------------------------------------
+2026-01-18 18:00:30,144 - INFO - 2026-01-18: 1.120 kWh/m2 -> 24.0% charge
+2026-01-18 18:00:30,144 - INFO - 2026-01-18: 1.102 kWh/m2 -> 23.6% charge
+2026-01-18 18:00:30,144 - INFO - 2026-01-18: 1.317 kWh/m2 -> 28.2% charge
+2026-01-18 18:00:30,144 - INFO - 2026-01-18: 0.806 kWh/m2 -> 17.3% charge
+2026-01-18 18:00:30,144 - INFO - 2026-01-18: 0.786 kWh/m2 -> 16.8% charge
+2026-01-18 18:00:30,144 - INFO - 2026-01-18: 0.744 kWh/m2 -> 15.9% charge
+2026-01-18 18:00:30,144 - INFO - 2026-01-18: 1.040 kWh/m2 -> 22.3% charge
+2026-01-18 18:00:30,144 - INFO - ============================================================
+2026-01-18 18:00:30,145 - INFO - PIPELINE COMPLETED
+2026-01-18 18:00:30,145 - INFO - ============================================================
+2026-01-18 18:00:33,664 - INFO - ============================================================
+2026-01-18 18:00:33,665 - INFO - SOLAR PIPELINE - COMPLETE WORKFLOW
+2026-01-18 18:00:33,665 - INFO - ============================================================
+2026-01-18 18:00:33,665 - INFO - Finding URL for Deinze
+2026-01-18 18:00:33,665 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/1)
+2026-01-18 18:00:34,008 - INFO - Success (86162 bytes)
+2026-01-18 18:00:34,009 - INFO - Found: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 18:00:34,009 - INFO - Fetching: https://en.tutiempo.net/solar-radiation/deinze.html (attempt 1/3)
+2026-01-18 18:00:34,334 - INFO - Success (86162 bytes)
+2026-01-18 18:00:34,349 - INFO - Found 15 daily totals
+2026-01-18 18:00:34,353 - INFO - Extracted 15 daily and 828 hourly records
+2026-01-18 18:00:34,354 - INFO - Saved 15 records to daily_forecast.csv
+2026-01-18 18:00:34,356 - INFO - Saved 828 records to hourly_detail.csv
+2026-01-18 18:00:34,357 - INFO - Saved 15 records to battery_prognosis.csv
+2026-01-18 18:00:34,357 - INFO - 
+Battery Charge Prognosis (first 7 days):
+2026-01-18 18:00:34,357 - INFO - ------------------------------------------------------------
+2026-01-18 18:00:34,357 - INFO - 2026-01-18: 1.120 kWh/m2 -> 24.0% charge
+2026-01-18 18:00:34,357 - INFO - 2026-01-18: 1.102 kWh/m2 -> 23.6% charge
+2026-01-18 18:00:34,357 - INFO - 2026-01-18: 1.317 kWh/m2 -> 28.2% charge
+2026-01-18 18:00:34,358 - INFO - 2026-01-18: 0.806 kWh/m2 -> 17.3% charge
+2026-01-18 18:00:34,358 - INFO - 2026-01-18: 0.786 kWh/m2 -> 16.8% charge
+2026-01-18 18:00:34,358 - INFO - 2026-01-18: 0.744 kWh/m2 -> 15.9% charge
+2026-01-18 18:00:34,358 - INFO - 2026-01-18: 1.040 kWh/m2 -> 22.3% charge
+2026-01-18 18:00:34,358 - INFO - ============================================================
+2026-01-18 18:00:34,358 - INFO - PIPELINE COMPLETED
+2026-01-18 18:00:34,358 - INFO - ============================================================
