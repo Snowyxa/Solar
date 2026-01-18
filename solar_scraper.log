@@ -1,0 +1,281 @@
+2026-01-17 20:54:18,203 - INFO - ============================================================
+2026-01-17 20:54:18,203 - INFO - V1 - Solar Radiation Data Scraper voor Deinze
+2026-01-17 20:54:18,204 - INFO - ============================================================
+2026-01-17 20:54:18,204 - INFO - Geen bestaande data gevonden
+2026-01-17 20:54:18,205 - INFO - Downloaden van: https://en.tutiempo.net/deinze.html (poging 1/3)
+2026-01-17 20:54:18,866 - INFO - Successvol gedownload (242501 bytes)
+2026-01-17 20:54:18,866 - INFO - Zoeken naar solar radiation data...
+2026-01-17 20:54:18,932 - INFO - Gevonden 2 solar radiation waarde(n)
+2026-01-17 20:54:18,933 - INFO - Gevonden 15 datum patroon(s)
+2026-01-17 20:54:18,933 - INFO - Gevonden 2 dagwaarde(n)
+2026-01-17 20:54:18,933 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:54:18,933 - INFO -   2026-01-18: 0.579 kWh/m²
+2026-01-17 20:54:18,934 - INFO - Opslaan van 2 nieuwe record(s)
+2026-01-17 20:54:18,936 - INFO - Data opgeslagen in data\raw\solar_deinze.csv (2 totaal records)
+2026-01-17 20:54:18,936 - INFO - ============================================================
+2026-01-17 20:54:18,936 - INFO - V1 Scraper voltooid
+2026-01-17 20:54:18,936 - INFO - ============================================================
+2026-01-17 20:54:34,002 - INFO - ============================================================
+2026-01-17 20:54:34,002 - INFO - V1 - Solar Radiation Data Scraper voor Deinze
+2026-01-17 20:54:34,002 - INFO - ============================================================
+2026-01-17 20:54:34,004 - INFO - Bestaande data geladen: 2 records
+2026-01-17 20:54:34,004 - INFO - Downloaden van: https://en.tutiempo.net/deinze.html (poging 1/3)
+2026-01-17 20:54:35,416 - INFO - Successvol gedownload (242501 bytes)
+2026-01-17 20:54:35,417 - INFO - Zoeken naar solar radiation data...
+2026-01-17 20:54:35,486 - INFO - Gevonden 2 solar radiation waarde(n)
+2026-01-17 20:54:35,486 - INFO - Gevonden 15 datum patroon(s)
+2026-01-17 20:54:35,486 - INFO - Gevonden 2 dagwaarde(n)
+2026-01-17 20:54:35,486 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:54:35,486 - INFO -   2026-01-18: 0.579 kWh/m²
+2026-01-17 20:54:35,487 - INFO - Geen nieuwe records om toe te voegen (alle datums bestaan al)
+2026-01-17 20:54:35,487 - INFO - ============================================================
+2026-01-17 20:54:35,487 - INFO - V1 Scraper voltooid
+2026-01-17 20:54:35,487 - INFO - ============================================================
+2026-01-17 20:56:21,762 - INFO - ============================================================
+2026-01-17 20:56:21,762 - INFO - V1 - Solar Radiation Data Scraper voor Deinze
+2026-01-17 20:56:21,762 - INFO - ============================================================
+2026-01-17 20:56:21,765 - INFO - Bestaande data geladen: 2 records
+2026-01-17 20:56:21,765 - INFO - Downloaden van: https://en.tutiempo.net/deinze.html (poging 1/3)
+2026-01-17 20:56:22,448 - INFO - Successvol gedownload (242501 bytes)
+2026-01-17 20:56:22,449 - INFO - Zoeken naar solar radiation data...
+2026-01-17 20:56:22,516 - INFO - Gevonden 1 unieke solar radiation waarde(n)
+2026-01-17 20:56:22,516 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:56:22,516 - INFO - Gevonden 1 dagwaarde(n)
+2026-01-17 20:56:22,516 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:56:22,517 - INFO - Geen nieuwe records om toe te voegen (alle datums bestaan al)
+2026-01-17 20:56:22,517 - INFO - ============================================================
+2026-01-17 20:56:22,518 - INFO - V1 Scraper voltooid
+2026-01-17 20:56:22,518 - INFO - ============================================================
+2026-01-17 20:56:28,769 - INFO - ============================================================
+2026-01-17 20:56:28,769 - INFO - V1 - Solar Radiation Data Scraper voor Deinze
+2026-01-17 20:56:28,769 - INFO - ============================================================
+2026-01-17 20:56:28,771 - INFO - Bestaande data geladen: 2 records
+2026-01-17 20:56:28,771 - INFO - Downloaden van: https://en.tutiempo.net/deinze.html (poging 1/3)
+2026-01-17 20:56:29,165 - INFO - Successvol gedownload (242501 bytes)
+2026-01-17 20:56:29,166 - INFO - Zoeken naar solar radiation data...
+2026-01-17 20:56:29,228 - INFO - Gevonden 1 unieke solar radiation waarde(n)
+2026-01-17 20:56:29,228 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:56:29,228 - INFO - Gevonden 1 dagwaarde(n)
+2026-01-17 20:56:29,228 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:56:29,229 - INFO - Geen nieuwe records om toe te voegen (alle datums bestaan al)
+2026-01-17 20:56:29,229 - INFO - ============================================================
+2026-01-17 20:56:29,229 - INFO - V1 Scraper voltooid
+2026-01-17 20:56:29,229 - INFO - ============================================================
+2026-01-17 20:56:29,653 - INFO - ============================================================
+2026-01-17 20:56:29,653 - INFO - V1 - Solar Radiation Data Scraper voor Deinze
+2026-01-17 20:56:29,653 - INFO - ============================================================
+2026-01-17 20:56:29,655 - INFO - Bestaande data geladen: 2 records
+2026-01-17 20:56:29,655 - INFO - Downloaden van: https://en.tutiempo.net/deinze.html (poging 1/3)
+2026-01-17 20:56:30,049 - INFO - Successvol gedownload (242501 bytes)
+2026-01-17 20:56:30,049 - INFO - Zoeken naar solar radiation data...
+2026-01-17 20:56:30,112 - INFO - Gevonden 1 unieke solar radiation waarde(n)
+2026-01-17 20:56:30,112 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:56:30,112 - INFO - Gevonden 1 dagwaarde(n)
+2026-01-17 20:56:30,112 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:56:30,113 - INFO - Geen nieuwe records om toe te voegen (alle datums bestaan al)
+2026-01-17 20:56:30,113 - INFO - ============================================================
+2026-01-17 20:56:30,113 - INFO - V1 Scraper voltooid
+2026-01-17 20:56:30,113 - INFO - ============================================================
+2026-01-17 20:56:30,564 - INFO - ============================================================
+2026-01-17 20:56:30,564 - INFO - V1 - Solar Radiation Data Scraper voor Deinze
+2026-01-17 20:56:30,564 - INFO - ============================================================
+2026-01-17 20:56:30,566 - INFO - Bestaande data geladen: 2 records
+2026-01-17 20:56:30,566 - INFO - Downloaden van: https://en.tutiempo.net/deinze.html (poging 1/3)
+2026-01-17 20:56:30,944 - INFO - Successvol gedownload (242501 bytes)
+2026-01-17 20:56:30,945 - INFO - Zoeken naar solar radiation data...
+2026-01-17 20:56:31,022 - INFO - Gevonden 1 unieke solar radiation waarde(n)
+2026-01-17 20:56:31,022 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:56:31,022 - INFO - Gevonden 1 dagwaarde(n)
+2026-01-17 20:56:31,022 - INFO -   2026-01-17: 0.579 kWh/m²
+2026-01-17 20:56:31,023 - INFO - Geen nieuwe records om toe te voegen (alle datums bestaan al)
+2026-01-17 20:56:31,023 - INFO - ============================================================
+2026-01-17 20:56:31,023 - INFO - V1 Scraper voltooid
+2026-01-17 20:56:31,023 - INFO - ============================================================
+2026-01-18 00:07:49,120 - INFO - ============================================================
+2026-01-18 00:07:49,120 - INFO - V2 - Detailed Solar Radiation Forecast Scraper voor Deinze
+2026-01-18 00:07:49,120 - INFO - ============================================================
+2026-01-18 00:07:49,120 - INFO - Geen bestaande data gevonden voor solar_daily_summary.csv
+2026-01-18 00:07:49,122 - INFO - Geen bestaande data gevonden voor solar_hourly_detail.csv
+2026-01-18 00:07:49,122 - INFO - Zoeken naar solar radiation URL voor: Deinze
+2026-01-18 00:07:49,122 - INFO -   Proberen: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 00:07:49,122 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/1)
+2026-01-18 00:07:49,798 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:07:49,810 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/3)
+2026-01-18 00:07:50,137 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:07:50,138 - INFO - Zoeken naar gedetailleerde solar radiation forecast data...
+2026-01-18 00:07:50,152 - INFO - Gevonden 15 potentiële dag secties
+2026-01-18 00:07:50,154 - INFO - Gevonden 15 dagelijkse records en 0 uurlijkse records
+2026-01-18 00:07:50,154 - INFO - Gevonden 15 dagelijkse record(s):
+2026-01-18 00:07:50,155 - INFO -   2026-01-18 (Today): 1.166 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-19 (Today): 0.753 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-20 (Today): 1.195 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-21 (Today): 0.427 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-22 (Today): 0.353 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-23 (Today): 0.700 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-24 (Today): 1.279 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-25 (Today): 1.503 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-26 (Today): 1.094 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-27 (Today): 0.393 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-29 (Tomorrow): 0.401 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-29 (Tuesday): 0.492 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-30 (Wednesday): 1.458 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-01-31 (Thursday): 0.772 kWh/m² (None - None)
+2026-01-18 00:07:50,155 - INFO -   2026-02-01 (Friday): 0.400 kWh/m² (None - None)
+2026-01-18 00:07:50,156 - INFO - Opslaan van 15 nieuwe record(s) in solar_daily_summary.csv
+2026-01-18 00:07:50,161 - INFO - Data opgeslagen in data\raw\solar_daily_summary.csv (15 totaal records)
+2026-01-18 00:07:50,161 - INFO - ============================================================
+2026-01-18 00:07:50,161 - INFO - V2 Scraper voltooid
+2026-01-18 00:07:50,161 - INFO - ============================================================
+2026-01-18 00:08:29,656 - INFO - ============================================================
+2026-01-18 00:08:29,656 - INFO - V2 - Detailed Solar Radiation Forecast Scraper voor Deinze
+2026-01-18 00:08:29,656 - INFO - ============================================================
+2026-01-18 00:08:29,659 - INFO - Bestaande data geladen: 15 records uit solar_daily_summary.csv
+2026-01-18 00:08:29,659 - INFO - Geen bestaande data gevonden voor solar_hourly_detail.csv
+2026-01-18 00:08:29,659 - INFO - Zoeken naar solar radiation URL voor: Deinze
+2026-01-18 00:08:29,659 - INFO -   Proberen: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 00:08:29,659 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/1)
+2026-01-18 00:08:30,008 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:08:30,009 - INFO -   [OK] URL gevonden: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 00:08:30,009 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/3)
+2026-01-18 00:08:30,362 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:08:30,363 - INFO - Zoeken naar gedetailleerde solar radiation forecast data...
+2026-01-18 00:08:30,377 - INFO - Gevonden 15 dagelijkse totalen
+2026-01-18 00:08:30,379 - INFO - Gevonden 15 dagelijkse records en 0 uurlijkse records
+2026-01-18 00:08:30,379 - INFO - Gevonden 15 dagelijkse record(s):
+2026-01-18 00:08:30,379 - INFO -   2026-01-18 (Today): 1.166 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-19 (Tomorrow): 0.753 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-20 (Tuesday): 1.195 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-21 (Wednesday): 0.427 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-22 (Thursday): 0.353 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-23 (Friday): 0.700 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-24 (Saturday): 1.279 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-25 (Sunday): 1.503 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-26 (Monday): 1.094 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-27 (Tuesday): 0.393 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-28 (Wednesday): 0.401 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-29 (Thursday): 0.492 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-30 (Friday): 1.458 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-01-31 (Saturday): 0.772 kWh/m² (None - None)
+2026-01-18 00:08:30,380 - INFO -   2026-02-01 (Sunday): 0.400 kWh/m² (None - None)
+2026-01-18 00:08:30,383 - INFO - Toevoegen van 1 nieuwe record(s) aan solar_daily_summary.csv
+2026-01-18 00:08:30,384 - INFO - Data opgeslagen in data\raw\solar_daily_summary.csv (16 totaal records)
+2026-01-18 00:08:30,385 - INFO - ============================================================
+2026-01-18 00:08:30,385 - INFO - V2 Scraper voltooid
+2026-01-18 00:08:30,385 - INFO - ============================================================
+2026-01-18 00:08:51,056 - INFO - ============================================================
+2026-01-18 00:08:51,056 - INFO - V2 - Detailed Solar Radiation Forecast Scraper voor Deinze
+2026-01-18 00:08:51,056 - INFO - ============================================================
+2026-01-18 00:08:51,065 - INFO - Bestaande data geladen: 16 records uit solar_daily_summary.csv
+2026-01-18 00:08:51,065 - INFO - Geen bestaande data gevonden voor solar_hourly_detail.csv
+2026-01-18 00:08:51,065 - INFO - Zoeken naar solar radiation URL voor: Deinze
+2026-01-18 00:08:51,065 - INFO -   Proberen: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 00:08:51,065 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/1)
+2026-01-18 00:08:51,675 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:08:51,676 - INFO -   [OK] URL gevonden: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 00:08:51,676 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/3)
+2026-01-18 00:08:52,023 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:08:52,023 - INFO - Zoeken naar gedetailleerde solar radiation forecast data...
+2026-01-18 00:08:52,040 - INFO - Gevonden 15 dagelijkse totalen
+2026-01-18 00:08:52,043 - INFO - Gevonden 15 dagelijkse records en 133 uurlijkse records
+2026-01-18 00:08:52,043 - INFO - Gevonden 15 dagelijkse record(s):
+2026-01-18 00:08:52,043 - INFO -   2026-01-18 (Today): 1.166 kWh/m² (88:42 - 17:10)
+2026-01-18 00:08:52,043 - INFO -   2026-01-19 (Tomorrow): 0.753 kWh/m² (98:41 - 17:11)
+2026-01-18 00:08:52,043 - INFO -   2026-01-20 (Tuesday): 1.195 kWh/m² (08:40 - 17:13)
+2026-01-18 00:08:52,043 - INFO -   2026-01-21 (Wednesday): 0.427 kWh/m² (18:40 - 17:14)
+2026-01-18 00:08:52,043 - INFO -   2026-01-22 (Thursday): 0.353 kWh/m² (28:39 - 17:16)
+2026-01-18 00:08:52,043 - INFO -   2026-01-23 (Friday): 0.700 kWh/m² (38:37 - 17:18)
+2026-01-18 00:08:52,043 - INFO -   2026-01-24 (Saturday): 1.279 kWh/m² (48:36 - 17:19)
+2026-01-18 00:08:52,043 - INFO -   2026-01-25 (Sunday): 1.503 kWh/m² (58:35 - 17:21)
+2026-01-18 00:08:52,043 - INFO -   2026-01-26 (Monday): 1.094 kWh/m² (68:34 - 17:23)
+2026-01-18 00:08:52,043 - INFO -   2026-01-27 (Tuesday): 0.393 kWh/m² (78:33 - 17:24)
+2026-01-18 00:08:52,043 - INFO -   2026-01-28 (Wednesday): 0.401 kWh/m² (88:32 - 17:26)
+2026-01-18 00:08:52,043 - INFO -   2026-01-29 (Thursday): 0.492 kWh/m² (98:30 - 17:28)
+2026-01-18 00:08:52,043 - INFO -   2026-01-30 (Friday): 1.458 kWh/m² (08:29 - 17:30)
+2026-01-18 00:08:52,043 - INFO -   2026-01-31 (Saturday): 0.772 kWh/m² (18:28 - 17:31)
+2026-01-18 00:08:52,043 - INFO -   2026-02-01 (Sunday): 0.400 kWh/m² (18:26 - 17:33)
+2026-01-18 00:08:52,043 - INFO - Gevonden 133 uurlijkse record(s)
+2026-01-18 00:08:52,043 - INFO -   2026-01-18 09:00: 4.0 W/m²
+2026-01-18 00:08:52,043 - INFO -   2026-01-18 10:00: 61.0 W/m²
+2026-01-18 00:08:52,043 - INFO -   2026-01-18 11:00: 154.0 W/m²
+2026-01-18 00:08:52,043 - INFO -   2026-01-18 12:00: 213.0 W/m²
+2026-01-18 00:08:52,043 - INFO -   2026-01-18 13:00: 252.0 W/m²
+2026-01-18 00:08:52,044 - INFO -   ... en 128 meer
+2026-01-18 00:08:52,045 - INFO - Geen nieuwe records om toe te voegen aan solar_daily_summary.csv
+2026-01-18 00:08:52,045 - INFO - Opslaan van 133 nieuwe record(s) in solar_hourly_detail.csv
+2026-01-18 00:08:52,049 - INFO - Data opgeslagen in data\raw\solar_hourly_detail.csv (133 totaal records)
+2026-01-18 00:08:52,049 - INFO - ============================================================
+2026-01-18 00:08:52,049 - INFO - V2 Scraper voltooid
+2026-01-18 00:08:52,049 - INFO - ============================================================
+2026-01-18 00:10:53,429 - INFO - ============================================================
+2026-01-18 00:10:53,429 - INFO - V2 - Detailed Solar Radiation Forecast Scraper voor Deinze
+2026-01-18 00:10:53,429 - INFO - ============================================================
+2026-01-18 00:10:53,431 - INFO - Bestaande data geladen: 16 records uit solar_daily_summary.csv
+2026-01-18 00:10:53,439 - INFO - Bestaande data geladen: 133 records uit solar_hourly_detail.csv
+2026-01-18 00:10:53,439 - INFO - Zoeken naar solar radiation URL voor: Deinze
+2026-01-18 00:10:53,439 - INFO -   Proberen: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 00:10:53,439 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/1)
+2026-01-18 00:10:54,156 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:10:54,158 - INFO -   [OK] URL gevonden: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 00:10:54,158 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/3)
+2026-01-18 00:10:54,521 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:10:54,522 - INFO - Zoeken naar gedetailleerde solar radiation forecast data...
+2026-01-18 00:10:54,541 - INFO - Gevonden 15 dagelijkse totalen
+2026-01-18 00:10:54,545 - INFO - Gevonden 15 dagelijkse records en 133 uurlijkse records
+2026-01-18 00:10:54,546 - INFO - Gevonden 15 dagelijkse record(s):
+2026-01-18 00:10:54,546 - INFO -   2026-01-18 (Today): 1.166 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-19 (Tomorrow): 0.753 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-20 (Tuesday): 1.195 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-21 (Wednesday): 0.427 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-22 (Thursday): 0.353 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-23 (Friday): 0.700 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-24 (Saturday): 1.279 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-25 (Sunday): 1.503 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-26 (Monday): 1.094 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-27 (Tuesday): 0.393 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-28 (Wednesday): 0.401 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-29 (Thursday): 0.492 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-30 (Friday): 1.458 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-01-31 (Saturday): 0.772 kWh/m² (16:00 - 17:00)
+2026-01-18 00:10:54,546 - INFO -   2026-02-01 (Sunday): 0.400 kWh/m² (14:00 - 15:00)
+2026-01-18 00:10:54,546 - INFO - Gevonden 133 uurlijkse record(s)
+2026-01-18 00:10:54,546 - INFO -   2026-01-18 09:00: 4.0 W/m²
+2026-01-18 00:10:54,546 - INFO -   2026-01-18 10:00: 61.0 W/m²
+2026-01-18 00:10:54,546 - INFO -   2026-01-18 11:00: 154.0 W/m²
+2026-01-18 00:10:54,546 - INFO -   2026-01-18 12:00: 213.0 W/m²
+2026-01-18 00:10:54,546 - INFO -   2026-01-18 13:00: 252.0 W/m²
+2026-01-18 00:10:54,546 - INFO -   ... en 128 meer
+2026-01-18 00:10:54,548 - INFO - Geen nieuwe records om toe te voegen aan solar_daily_summary.csv
+2026-01-18 00:10:54,550 - INFO - Geen nieuwe records om toe te voegen aan solar_hourly_detail.csv
+2026-01-18 00:10:54,551 - INFO - ============================================================
+2026-01-18 00:10:54,551 - INFO - V2 Scraper voltooid
+2026-01-18 00:10:54,551 - INFO - ============================================================
+2026-01-18 00:58:53,736 - INFO - ============================================================
+2026-01-18 00:58:53,736 - INFO - V3 - Battery Charge Prognosis Scraper voor Deinze
+2026-01-18 00:58:53,736 - INFO - ============================================================
+2026-01-18 00:58:53,737 - INFO - Geen config.yaml gevonden, gebruik default configuratie
+2026-01-18 00:58:53,737 - INFO - Installeer PyYAML om config.yaml te kunnen gebruiken: pip install pyyaml
+2026-01-18 00:58:53,737 - INFO - Configuratie:
+2026-01-18 00:58:53,737 - INFO -   Paneel oppervlak: 10.0 m²
+2026-01-18 00:58:53,737 - INFO -   Paneel efficiëntie: 20.0%
+2026-01-18 00:58:53,737 - INFO -   Systeem efficiëntie: 85.0%
+2026-01-18 00:58:53,737 - INFO -   Batterij capaciteit: 10.0 kWh
+2026-01-18 00:58:53,737 - INFO -   Max laadsnelheid: 5.0 kW
+2026-01-18 00:58:53,737 - INFO - Zoeken naar solar radiation URL voor: Deinze
+2026-01-18 00:58:53,737 - INFO -   Proberen: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 00:58:53,737 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/1)
+2026-01-18 00:58:54,394 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:58:54,395 - INFO -   [OK] URL gevonden: https://en.tutiempo.net/solar-radiation/deinze.html
+2026-01-18 00:58:54,395 - INFO - Downloaden van: https://en.tutiempo.net/solar-radiation/deinze.html (poging 1/3)
+2026-01-18 00:58:54,742 - INFO - Successvol gedownload (85853 bytes)
+2026-01-18 00:58:54,742 - INFO - Zoeken naar solar radiation forecast data...
+2026-01-18 00:58:54,757 - INFO - Gevonden 15 dagelijkse totalen
+2026-01-18 00:58:54,757 - INFO - Gevonden 15 dagelijkse record(s)
+2026-01-18 00:58:54,757 - INFO - Berekenen batterij oplaad prognose...
+2026-01-18 00:58:54,757 - INFO - 
+============================================================
+2026-01-18 00:58:54,757 - INFO - BATTERIJ OPLAAD PROGNOSE
+2026-01-18 00:58:54,757 - INFO - ============================================================
+2026-01-18 00:58:54,763 - INFO - Processed data opgeslagen in data\processed\battery_prognosis.csv (15 records)
+2026-01-18 00:58:54,763 - INFO - ============================================================
+2026-01-18 00:58:54,763 - INFO - V3 Scraper voltooid
+2026-01-18 00:58:54,763 - INFO - ============================================================
