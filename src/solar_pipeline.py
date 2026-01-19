@@ -64,48 +64,117 @@ def find_url(location, base_url, fallback_url):
     return fallback_url
 
 
-def parse_date(text, today, index):
-    """Parse date from text"""
-    text = text.lower()
+def parse_date(text, today, index, seen_dates):
+    """Parse date from text with improved logic"""
+    text_lower = text.lower()
     
-    if 'today' in text:
-        return today
-    if 'tomorrow' in text:
-        return today + timedelta(days=1)
+    # Check for "today" or "tomorrow" first
+    if 'today' in text_lower:
+        date = today
+        if date not in seen_dates:
+            seen_dates.add(date)
+            return date
+    elif 'tomorrow' in text_lower:
+        date = today + timedelta(days=1)
+        if date not in seen_dates:
+            seen_dates.add(date)
+            return date
     
-    months = {'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6,
-              'july': 7, 'august': 8, 'september': 9, 'october': 10, 'november': 11, 'december': 12}
+    # Look for month names and dates
+    months = {
+        'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6,
+        'july': 7, 'august': 8, 'september': 9, 'october': 10, 'november': 11, 'december': 12,
+        'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'jun': 6,
+        'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12
+    }
     
+    # Try to find date patterns like "January 19" or "Feb 2"
     for month_name, month_num in months.items():
-        if month_name in text:
-            match = re.search(r'(\d{1,2})', text)
+        if month_name in text_lower:
+            # Look for day number near the month name
+            # Pattern: month name followed by optional comma/space and 1-2 digit day
+            pattern = rf'{re.escape(month_name)}\s*,?\s*(\d{{1,2}})'
+            match = re.search(pattern, text_lower)
             if match:
                 day = int(match.group(1))
-                year = today.year if month_num >= today.month else today.year + 1
+                # Determine year - if month is before current month, assume next year
+                current_month = today.month
+                if month_num < current_month or (month_num == current_month and day < today.day):
+                    year = today.year + 1
+                else:
+                    year = today.year
                 try:
-                    return datetime(year, month_num, day)
+                    date = datetime(year, month_num, day)
+                    if date not in seen_dates:
+                        seen_dates.add(date)
+                        return date
                 except ValueError:
                     pass
     
-    return today + timedelta(days=index)
+    # Try to find date patterns like "2026-01-19" or "19/01/2026"
+    date_patterns = [
+        (r'(\d{4})-(\d{1,2})-(\d{1,2})', lambda m: datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)))),
+        (r'(\d{1,2})/(\d{1,2})/(\d{4})', lambda m: datetime(int(m.group(3)), int(m.group(2)), int(m.group(1)))),
+        (r'(\d{1,2})-(\d{1,2})-(\d{4})', lambda m: datetime(int(m.group(3)), int(m.group(2)), int(m.group(1)))),
+    ]
+    
+    for pattern, parser in date_patterns:
+        match = re.search(pattern, text)
+        if match:
+            try:
+                date = parser(match)
+                if date >= today:  # Only future dates
+                    if date not in seen_dates:
+                        seen_dates.add(date)
+                        return date
+            except (ValueError, IndexError):
+                pass
+    
+    # Fallback: use index but ensure uniqueness
+    fallback_date = today + timedelta(days=index)
+    while fallback_date in seen_dates:
+        index += 1
+        fallback_date = today + timedelta(days=index)
+    seen_dates.add(fallback_date)
+    return fallback_date
 
 
 def extract_forecast(html):
-    """Extract daily and hourly forecast data"""
+    """Extract daily and hourly forecast data with improved date parsing"""
     soup = BeautifulSoup(html, 'html.parser')
-    today = datetime.now()
+    today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
     all_text = soup.get_text()
     
     daily_data = []
     hourly_data = []
+    seen_dates = set()  # Track dates to avoid duplicates
     
-    # Find all solar radiation totals
+    # Find all solar radiation totals - look for daily totals specifically
+    # Pattern: "Total solar radiation:" followed by value and unit
     total_matches = list(re.finditer(
-        r'Total solar radiation:\s*(\d+(?:\.\d+)?)\s*(wh|kwh|mj)\s*/?\s*m[²2]',
+        r'Total\s+solar\s+radiation\s*:?\s*(\d+(?:\.\d+)?)\s*(wh|kwh|mj)\s*/?\s*m[²2]',
         all_text, re.IGNORECASE
     ))
     
-    logger.info(f"Found {len(total_matches)} daily totals")
+    logger.info(f"Found {len(total_matches)} potential daily totals")
+    
+    # Also look for date headers in the HTML structure
+    date_elements = soup.find_all(['h2', 'h3', 'h4', 'div', 'span'], 
+                                  string=re.compile(r'(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|January|February|March|April|May|June|July|August|September|October|November|December|\d{1,2}[/-]\d{1,2})', re.IGNORECASE))
+    
+    # Create a mapping of positions to dates
+    date_map = {}
+    temp_seen = set()
+    for elem in date_elements:
+        text = elem.get_text()
+        pos = all_text.find(text)
+        if pos >= 0:
+            parsed = parse_date(text, today, len(date_map), temp_seen)
+            date_map[pos] = parsed
+            seen_dates.add(parsed)
+    
+    # Track the last successfully parsed date for sequential fallback
+    last_parsed_date = today - timedelta(days=1)  # Start one day before today
     
     for i, match in enumerate(total_matches):
         value = float(match.group(1))
@@ -119,33 +188,69 @@ def extract_forecast(html):
         else:  # wh
             value_kwh = value / 1000
         
-        # Get context for date parsing
-        context_start = max(0, match.start() - 2500)
+        # Get context for date parsing - look further back for date information
+        context_start = max(0, match.start() - 3000)
         context = all_text[context_start:match.start()]
         
-        parsed_date = parse_date(context, today, i)
+        # Try to find the closest date in the context
+        parsed_date = None
         
-        # Get day name
-        day_match = re.search(r'\b(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b', context, re.IGNORECASE)
-        day_name = day_match.group(1) if day_match else parsed_date.strftime('%A')
+        # First, check if there's a date element nearby
+        match_pos = match.start()
+        closest_date_pos = None
+        closest_date = None
+        for pos, date in date_map.items():
+            if pos < match_pos and (closest_date_pos is None or pos > closest_date_pos):
+                closest_date_pos = pos
+                closest_date = date
         
-        daily_data.append({
-            'Date': parsed_date.strftime('%Y-%m-%d'),
+        if closest_date:
+            parsed_date = closest_date
+        else:
+            # Parse from context text - use last_parsed_date + 1 as fallback base
+            fallback_index = max(0, (last_parsed_date - today).days + 1)
+            parsed_date = parse_date(context, today, fallback_index, seen_dates)
+        
+        # Update last parsed date if this date is later
+        if parsed_date > last_parsed_date:
+            last_parsed_date = parsed_date
+        
+        # Always calculate day name from the parsed date (not from context)
+        # This ensures accuracy - the date is the source of truth
+        day_name = parsed_date.strftime('%A')
+        
+        # Only add if we haven't seen this date yet (or update existing)
+        date_str = parsed_date.strftime('%Y-%m-%d')
+        existing_idx = None
+        for idx, record in enumerate(daily_data):
+            if record['Date'] == date_str:
+                existing_idx = idx
+                break
+        
+        record = {
+            'Date': date_str,
             'DayName': day_name,
             'SolarRadiation_kWh_m2': round(value_kwh, 6),
             'SolarRadiation_Wh_m2': round(value_kwh * 1000, 2),
             'Source': 'tutiempo.net',
             'FetchedAt': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        })
+        }
         
-        # Extract hourly data
-        hourly_section = context[-1500:] if len(context) > 1500 else context
+        if existing_idx is not None:
+            # Update existing record (keep the one with higher radiation value)
+            if value_kwh > daily_data[existing_idx]['SolarRadiation_kWh_m2']:
+                daily_data[existing_idx] = record
+        else:
+            daily_data.append(record)
+        
+        # Extract hourly data for this date
+        hourly_section = context[-2000:] if len(context) > 2000 else context
         hourly_matches = re.finditer(r'(\d{1,2}):(\d{2})\s*(\d+(?:\.\d+)?)\s*w/m[²2]', hourly_section, re.IGNORECASE)
         
         for h_match in hourly_matches:
             hour_value = float(h_match.group(3))
             hourly_data.append({
-                'Date': parsed_date.strftime('%Y-%m-%d'),
+                'Date': date_str,
                 'Time': f"{int(h_match.group(1)):02d}:{h_match.group(2)}",
                 'SolarRadiation_W_m2': round(hour_value, 2),
                 'SolarRadiation_Wh_m2': round(hour_value, 2),
@@ -153,8 +258,36 @@ def extract_forecast(html):
                 'FetchedAt': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             })
     
-    logger.info(f"Extracted {len(daily_data)} daily and {len(hourly_data)} hourly records")
-    return daily_data, hourly_data
+    # Sort by date and remove any duplicates
+    daily_data.sort(key=lambda x: x['Date'])
+    seen = set()
+    unique_daily_data = []
+    for record in daily_data:
+        if record['Date'] not in seen:
+            seen.add(record['Date'])
+            unique_daily_data.append(record)
+    
+    # Verify dates are sequential and fix day names if needed
+    if unique_daily_data:
+        for i, record in enumerate(unique_daily_data):
+            try:
+                date_obj = datetime.strptime(record['Date'], '%Y-%m-%d')
+                # Recalculate day name from date to ensure accuracy
+                record['DayName'] = date_obj.strftime('%A')
+                
+                # Log if dates seem out of order
+                if i > 0:
+                    prev_date = datetime.strptime(unique_daily_data[i-1]['Date'], '%Y-%m-%d')
+                    days_diff = (date_obj - prev_date).days
+                    if days_diff != 1:
+                        logger.warning(f"Date gap detected: {unique_daily_data[i-1]['Date']} to {record['Date']} ({days_diff} days)")
+            except ValueError as e:
+                logger.error(f"Invalid date format in record: {record['Date']} - {e}")
+    
+    logger.info(f"Extracted {len(unique_daily_data)} unique daily records and {len(hourly_data)} hourly records")
+    if unique_daily_data:
+        logger.info(f"Date range: {unique_daily_data[0]['Date']} ({unique_daily_data[0]['DayName']}) to {unique_daily_data[-1]['Date']} ({unique_daily_data[-1]['DayName']})")
+    return unique_daily_data, hourly_data
 
 
 def calculate_battery_prognosis(daily_data, config):
