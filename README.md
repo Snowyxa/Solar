@@ -25,6 +25,12 @@ Run the pipeline (downloads forecast + exports CSVs):
 python main.py
 ```
 
+Run the pipeline without opening the GUI (recommended for daily automation / Task Scheduler):
+
+```bash
+python main.py --no-gui
+```
+
 Open the GUI (edit settings + re-run + view results):
 
 ```bash
@@ -77,7 +83,17 @@ What to tweak to see different outcomes:
 - Update `efficiency` to match your exact panel datasheet value.
 
 ## Outputs
-- `data/exports/daily_forecast.csv` — daily solar radiation forecast.
-- `data/exports/hourly_detail.csv` — hourly solar radiation.
-- `data/exports/battery_prognosis.csv` — includes panel/battery counts, per-panel yield, total yield, chargeable energy, and charge %.
+- `data/extracted/daily_forecast.csv` — daily solar radiation forecast (parsed/cleaned from the website).
+- `data/extracted/hourly_detail.csv` — hourly solar radiation (parsed/cleaned from the website).
+- `data/prognosis/battery_prognosis.csv` — calculated results (panel/battery counts, yields, chargeable energy, and charge %).
+
+## History (no duplicates / no redundant rows)
+The pipeline also keeps a history of **changes** over time (it won’t keep adding the same row again and again if nothing changed):
+- `data/history/extracted/daily_forecast.csv`
+- `data/history/extracted/hourly_detail.csv`
+- `data/history/prognosis/battery_prognosis.csv` (includes a `ConfigHash` so different system settings can coexist cleanly)
+
+Notes:
+- `data/` is ignored by git (it’s runtime output).
+- If you still have `data/exports/`, `data/raw/` or `data/processed/` in your folder, those are **legacy leftovers** from earlier versions/experiments and can be deleted.
 

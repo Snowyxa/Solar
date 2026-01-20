@@ -13,6 +13,7 @@ import logging
 import threading
 import sys
 import ctypes
+import os
 from src.config import load_config
 from src.solar_pipeline import run_pipeline
 
@@ -30,7 +31,9 @@ if sys.platform == 'win32':
 
 logger = logging.getLogger(__name__)
 
-EXPORT_DIR = Path("data/exports")
+PROGNOSIS_DIR = Path("data/prognosis")
+HISTORY_PROGNOSIS_PATH = Path("data/history/prognosis/battery_prognosis.csv")
+LEGACY_EXPORT_DIR = Path("data/exports")
 CONFIG_FILE = Path("config.yaml")
 
 # Dark mode color scheme - Solar themed
@@ -48,6 +51,100 @@ COLORS = {
     'highlight': '#664200',    # Orange highlight
     'overlay': '#000000',      # Loading overlay
 }
+
+
+class ToggleSwitch(tk.Frame):
+    """Custom toggle switch widget for Latest/History view selection"""
+    
+    def __init__(self, parent, on_command=None, scale=1.0, **kwargs):
+        super().__init__(parent, bg=COLORS['bg'], **kwargs)
+        self.on_command = on_command
+        self.is_enabled = False  # False = Latest, True = History
+        self.scale = scale
+        
+        # Dimensions
+        self.width = int(160 * scale)
+        self.height = int(32 * scale)
+        self.radius = int(14 * scale)
+        
+        # Container with labels
+        container = tk.Frame(self, bg=COLORS['bg'])
+        container.pack()
+        
+        # Latest label
+        self.latest_label = tk.Label(container, text="Latest", 
+                                     font=('Segoe UI', int(10 * scale), 'bold'),
+                                     bg=COLORS['bg'], fg=COLORS['solar_gold'],
+                                     cursor='hand2')
+        self.latest_label.pack(side=tk.LEFT, padx=(0, 8))
+        self.latest_label.bind('<Button-1>', lambda e: self._set_state(False))
+        
+        # Create canvas for the switch
+        self.canvas = tk.Canvas(container, width=self.width//2.5, height=self.height, 
+                               bg=COLORS['bg'], highlightthickness=0, borderwidth=0,
+                               cursor='hand2')
+        self.canvas.pack(side=tk.LEFT)
+        self.canvas.bind('<Button-1>', self._on_click)
+        
+        # History label
+        self.history_label = tk.Label(container, text="History", 
+                                      font=('Segoe UI', int(10 * scale), 'bold'),
+                                      bg=COLORS['bg'], fg='#666666',
+                                      cursor='hand2')
+        self.history_label.pack(side=tk.LEFT, padx=(8, 0))
+        self.history_label.bind('<Button-1>', lambda e: self._set_state(True))
+        
+        self.draw_switch()
+    
+    def draw_switch(self):
+        """Draw the toggle switch"""
+        self.canvas.delete('all')
+        
+        w = int(self.width // 2.5)
+        h = self.height
+        r = self.radius
+        pad = 3
+        
+        # Background track (pill shape)
+        track_color = COLORS['accent'] if self.is_enabled else COLORS['border']
+        self.canvas.create_oval(pad, pad, h - pad, h - pad, fill=track_color, outline=track_color)
+        self.canvas.create_oval(w - h + pad, pad, w - pad, h - pad, fill=track_color, outline=track_color)
+        self.canvas.create_rectangle(h//2, pad, w - h//2, h - pad, fill=track_color, outline=track_color)
+        
+        # Sliding circle (knob)
+        knob_pad = 5
+        knob_x = w - h//2 - knob_pad if self.is_enabled else h//2 + knob_pad
+        knob_r = h//2 - knob_pad - 2
+        self.canvas.create_oval(knob_x - knob_r, h//2 - knob_r, 
+                               knob_x + knob_r, h//2 + knob_r,
+                               fill='#ffffff', outline='#ffffff')
+        
+        # Update label colors
+        if self.is_enabled:
+            self.latest_label.config(fg='#666666')
+            self.history_label.config(fg=COLORS['solar_gold'])
+        else:
+            self.latest_label.config(fg=COLORS['solar_gold'])
+            self.history_label.config(fg='#666666')
+    
+    def _set_state(self, enabled):
+        """Set switch state directly"""
+        if self.is_enabled != enabled:
+            self.is_enabled = enabled
+            self.draw_switch()
+            if self.on_command:
+                self.on_command()
+    
+    def _on_click(self, event):
+        """Handle click on switch"""
+        self.is_enabled = not self.is_enabled
+        self.draw_switch()
+        if self.on_command:
+            self.on_command()
+    
+    def get(self):
+        """Get current value as 'History' or 'Latest'"""
+        return "History" if self.is_enabled else "Latest"
 
 
 class LoadingOverlay:
@@ -185,8 +282,9 @@ class PrognosisViewer:
         hint_font_size = int(9 * self.scale_factor)
         entry_font_size = int(11 * self.scale_factor)
         button_font_size = int(base_font_size * self.scale_factor)
-        table_font_size = int(9 * self.scale_factor)
-        table_header_font_size = int(10 * self.scale_factor)
+        # Slightly smaller table fonts so headers fit without scrolling.
+        table_font_size = max(8, int(8 * self.scale_factor))
+        table_header_font_size = max(8, int(9 * self.scale_factor))
         
         style.configure('TLabel',
                        background=COLORS['bg'],
@@ -244,7 +342,7 @@ class PrognosisViewer:
                        fieldbackground=COLORS['input_bg'],
                        bordercolor=COLORS['border'],
                        font=('Consolas', table_font_size),
-                       rowheight=int(22 * self.scale_factor))
+                       rowheight=int(20 * self.scale_factor))
         
         style.configure('Treeview.Heading',
                        background=COLORS['border'],
@@ -282,7 +380,7 @@ class PrognosisViewer:
         subtitle.pack(pady=(0, 0))
         
         # Configuration panel - simplified for better performance, more compact
-        form_frame = ttk.LabelFrame(main_container, text="⚙️ System Configuration", padding=10)
+        form_frame = ttk.LabelFrame(main_container, text="", padding=10)
         form_frame.pack(fill=tk.X, pady=(0, 10))
         
         # Create a container for inputs - two column layout
@@ -346,20 +444,51 @@ class PrognosisViewer:
         ttk.Button(btn_frame, text="💾 Save & Run", command=self._save_and_run, width=18).pack(side=tk.LEFT, padx=(0, 8))
         ttk.Button(btn_frame, text="🔄 Refresh", command=self._refresh_data, width=18).pack(side=tk.LEFT)
         
-        # Results table - more compact
-        results_frame = ttk.LabelFrame(main_container, text="📊 Forecast Results", padding=8)
+        # Results section header with toggle switch
+        results_header = tk.Frame(main_container, bg=COLORS['bg'])
+        results_header.pack(fill=tk.X, pady=(16, 8))
+        
+        # Forecast Results label on the left
+        results_title = tk.Label(results_header, text="📊 Forecast Results", 
+                                font=('Segoe UI', int(11 * self.scale_factor), 'bold'),
+                                bg=COLORS['bg'], fg=COLORS['accent'])
+        results_title.pack(side=tk.LEFT)
+        
+        # Toggle switch on the right
+        self.toggle_switch = ToggleSwitch(results_header, on_command=self._on_view_mode_changed, 
+                                          scale=self.scale_factor)
+        self.toggle_switch.pack(side=tk.RIGHT)
+        
+        # Results table - more compact (no label frame text since we have header)
+        results_frame = ttk.LabelFrame(main_container, text="", padding=8)
         results_frame.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
         
         # Table with scrollbars
         table_container = tk.Frame(results_frame, bg=COLORS['bg'])
         table_container.pack(fill=tk.BOTH, expand=True)
         
-        # Match actual CSV columns - show most relevant info (removed PanelCount and BatteryCapacityTotal_kWh)
-        cols = [
+        # Columns for Latest view (snapshot) vs History view.
+        self.latest_cols = [
             'Date', 'DayName', 'SolarRadiation_kWh_m2',
-            'PerPanelYield_kWh', 'TotalYield_kWh',
+            'PerPanelYield_kWh', 'Chargeable_kWh', 'ChargePercentage'
+        ]
+        self.history_cols = [
+            'Date', 'FetchedAt', 'DayName', 'SolarRadiation_kWh_m2',
             'Chargeable_kWh', 'ChargePercentage'
         ]
+        cols = self.latest_cols
+
+        # Short, clear column labels for display (keeps internal column ids unchanged).
+        col_labels = {
+            'Date': 'Date',
+            'FetchedAt': 'Fetched',
+            'DayName': 'Day',
+            'SolarRadiation_kWh_m2': 'Rad kWh/m²',
+            'PerPanelYield_kWh': 'Panel kWh',
+            'Chargeable_kWh': 'Charge kWh',
+            'ChargePercentage': 'Batt %',
+        }
+        self.col_labels = col_labels
         
         # Create frame for tree and scrollbar (vertical only)
         tree_frame = tk.Frame(table_container, bg=COLORS['bg'])
@@ -377,32 +506,29 @@ class PrognosisViewer:
         tree_frame.grid_columnconfigure(0, weight=1)
         
         # Set appropriate column widths for better fit without horizontal scroll - more compact
-        col_widths = {
-            'Date': int(90 * self.scale_factor),
-            'DayName': int(90 * self.scale_factor),
-            'SolarRadiation_kWh_m2': int(150 * self.scale_factor),
-            'PerPanelYield_kWh': int(130 * self.scale_factor),
-            'TotalYield_kWh': int(120 * self.scale_factor),
-            'Chargeable_kWh': int(120 * self.scale_factor),
-            'ChargePercentage': int(130 * self.scale_factor)
+        self.latest_col_widths = {
+            'Date': int(100 * self.scale_factor),
+            'DayName': int(100 * self.scale_factor),
+            'SolarRadiation_kWh_m2': int(130 * self.scale_factor),
+            'PerPanelYield_kWh': int(120 * self.scale_factor),
+            'Chargeable_kWh': int(130 * self.scale_factor),
+            'ChargePercentage': int(100 * self.scale_factor)
         }
-        
-        # Store column configuration for responsive resizing
-        self.cols = cols
-        self.col_widths = col_widths
-        self.col_priority = {
-            'Date': 1,  # Most important
-            'DayName': 2,
-            'ChargePercentage': 3,
-            'TotalYield_kWh': 4,
-            'Chargeable_kWh': 5,
-            'SolarRadiation_kWh_m2': 6,
-            'PerPanelYield_kWh': 7  # Least important, can hide first
+        self.history_col_widths = {
+            'Date': int(100 * self.scale_factor),
+            'FetchedAt': int(160 * self.scale_factor),
+            'DayName': int(100 * self.scale_factor),
+            'SolarRadiation_kWh_m2': int(130 * self.scale_factor),
+            'Chargeable_kWh': int(130 * self.scale_factor),
+            'ChargePercentage': int(100 * self.scale_factor)
         }
+
+        # Store column configuration for responsive resizing (init to Latest)
+        self._apply_table_mode("Latest")
         
         for col in cols:
-            self.tree.heading(col, text=col)
-            width = col_widths.get(col, int(110 * self.scale_factor))
+            self.tree.heading(col, text=self.col_labels.get(col, col))
+            width = self.col_widths.get(col, int(110 * self.scale_factor))
             self.tree.column(col, anchor=tk.CENTER, width=width, stretch=True)
         
         # Bind window resize event to adjust table columns
@@ -496,7 +622,18 @@ class PrognosisViewer:
             self.loading.show("Loading data...")
         
         try:
-            filepath = EXPORT_DIR / "battery_prognosis.csv"
+            mode = self.toggle_switch.get() if hasattr(self, "toggle_switch") else "Latest"
+            self._apply_table_mode(mode)
+
+            if mode == "History":
+                filepath = HISTORY_PROGNOSIS_PATH
+            else:
+                filepath = PROGNOSIS_DIR / "battery_prognosis.csv"
+                if not filepath.exists():
+                    # Backward-compatible fallback to older folder name.
+                    legacy = LEGACY_EXPORT_DIR / "battery_prognosis.csv"
+                    if legacy.exists():
+                        filepath = legacy
             if not filepath.exists():
                 self.status.config(text="⚠️ No data found. Run pipeline first.", fg=COLORS['warning'])
                 if show_loading:
@@ -504,7 +641,7 @@ class PrognosisViewer:
                 return
             self.data = pd.read_csv(filepath)
             self._populate_table()
-            self.status.config(text=f"✓ Loaded {len(self.data)} records from {filepath.name}", fg=COLORS['success'])
+            self.status.config(text=f"✓ Loaded {len(self.data)} records from {filepath}", fg=COLORS['success'])
         except Exception as e:
             self.status.config(text=f"❌ Error: {e}", fg=COLORS['warning'])
             logger.error(f"Error loading data: {e}")
@@ -525,12 +662,17 @@ class PrognosisViewer:
         if self.data is None or self.data.empty:
             return
         
-        # Deduplicate by Date, keeping the first occurrence (or you could keep the last)
-        # This ensures we show unique days
+        mode = self.toggle_switch.get() if hasattr(self, "toggle_switch") else "Latest"
         if 'Date' in self.data.columns:
-            self.data = self.data.drop_duplicates(subset=['Date'], keep='first')
-            # Sort by date
-            self.data = self.data.sort_values('Date').reset_index(drop=True)
+            if mode == "Latest":
+                # Unique days for snapshot view.
+                self.data = self.data.drop_duplicates(subset=['Date'], keep='first')
+                self.data = self.data.sort_values('Date').reset_index(drop=True)
+            else:
+                # History view: keep all rows (sorted newest-first).
+                sort_cols = [c for c in ['Date', 'FetchedAt'] if c in self.data.columns]
+                if sort_cols:
+                    self.data = self.data.sort_values(sort_cols, ascending=[False] * len(sort_cols)).reset_index(drop=True)
         
         # Add rows with alternating background (handled by ttk theme)
         for i, (_, row) in enumerate(self.data.iterrows()):
@@ -553,7 +695,45 @@ class PrognosisViewer:
                 else:
                     formatted_values.append(str(val))
             self.tree.insert('', tk.END, values=formatted_values)
-    
+
+    def _apply_table_mode(self, mode: str) -> None:
+        """Switch table columns/widths for Latest vs History."""
+        if mode == "History":
+            cols = self.history_cols
+            self.col_widths = self.history_col_widths
+            self.cols = cols
+            self.col_priority = {
+                'Date': 1,
+                'FetchedAt': 2,
+                'ChargePercentage': 3,
+                'Chargeable_kWh': 4,
+                'SolarRadiation_kWh_m2': 5,
+                'DayName': 6,
+            }
+        else:
+            cols = self.latest_cols
+            self.col_widths = self.latest_col_widths
+            self.cols = cols
+            self.col_priority = {
+                'Date': 1,
+                'DayName': 2,
+                'ChargePercentage': 3,
+                'Chargeable_kWh': 4,
+                'SolarRadiation_kWh_m2': 5,
+                'PerPanelYield_kWh': 6,
+            }
+
+        # Reconfigure tree columns/headings.
+        self.tree["columns"] = cols
+        for col in cols:
+            self.tree.heading(col, text=self.col_labels.get(col, col))
+            width = self.col_widths.get(col, int(110 * self.scale_factor))
+            self.tree.column(col, anchor=tk.CENTER, width=width, stretch=True)
+
+    def _on_view_mode_changed(self):
+        """Handle view mode change from toggle switch"""
+        self._load_data(show_loading=True)
+
     def _build_config_from_form(self):
         """Create a config dict from GUI fields."""
         cfg = load_config()

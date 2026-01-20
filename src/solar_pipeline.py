@@ -8,7 +8,10 @@ import logging
 import pandas as pd
 from pathlib import Path
 import time
+import hashlib
+import json
 from .config import load_config
+from .storage import write_snapshot_csv, upsert_history_csv
 
 # Setup logging
 logging.basicConfig(
@@ -22,7 +25,25 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 DATA_DIR = Path("data")
+# Separate folders so it's obvious what's extracted vs calculated.
+EXTRACTED_DIR = DATA_DIR / "extracted"   # parsed/cleaned data extracted from the website
+PROGNOSIS_DIR = DATA_DIR / "prognosis"   # calculated battery prognosis output
+HISTORY_DIR = DATA_DIR / "history"
+HISTORY_EXTRACTED_DIR = HISTORY_DIR / "extracted"
+HISTORY_PROGNOSIS_DIR = HISTORY_DIR / "prognosis"
+# Legacy folder name used by older versions (kept for compatibility).
 EXPORT_DIR = DATA_DIR / "exports"
+
+def _config_hash(config: dict) -> str:
+    """Stable hash for the parts of config that affect prognosis calculations."""
+    relevant = {
+        "location": config.get("location"),
+        "solar_panel": config.get("solar_panel", {}),
+        "battery": config.get("battery", {}),
+        "system": config.get("system", {}),
+    }
+    payload = json.dumps(relevant, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha1(payload).hexdigest()[:12]
 
 
 def fetch_html(url, max_retries, retry_delay, timeout):
@@ -346,27 +367,6 @@ def calculate_battery_prognosis(daily_data, config):
     return prognosis
 
 
-def save_csv(data, filename, overwrite=False):
-    """Save data to CSV"""
-    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
-    filepath = EXPORT_DIR / filename
-    
-    if not data:
-        logger.warning(f"No data to save for {filename}")
-        return False
-    
-    df = pd.DataFrame(data)
-    
-    if filepath.exists() and not overwrite:
-        # Append without duplicates
-        existing = pd.read_csv(filepath)
-        df = pd.concat([existing, df]).drop_duplicates(subset=['Date'], keep='last')
-    
-    df.to_csv(filepath, index=False)
-    logger.info(f"Saved {len(df)} records to {filepath.name}")
-    return True
-
-
 def run_pipeline(config=None):
     """Run complete pipeline: scrape -> calculate -> export"""
     if config is None:
@@ -396,11 +396,51 @@ def run_pipeline(config=None):
     
     # Calculate prognosis
     prognosis_data = calculate_battery_prognosis(daily_data, config)
+    cfg_hash = _config_hash(config)
+    for rec in prognosis_data:
+        rec["ConfigHash"] = cfg_hash
     
-    # Export CSVs
-    save_csv(daily_data, 'daily_forecast.csv', overwrite=True)
-    save_csv(hourly_data, 'hourly_detail.csv', overwrite=True)
-    save_csv(prognosis_data, 'battery_prognosis.csv', overwrite=True)
+    # Write "latest snapshot" files (the GUI reads these).
+    write_snapshot_csv(daily_data, EXTRACTED_DIR / "daily_forecast.csv")
+    write_snapshot_csv(hourly_data, EXTRACTED_DIR / "hourly_detail.csv")
+    write_snapshot_csv(prognosis_data, PROGNOSIS_DIR / "battery_prognosis.csv")
+
+    # Append to history (no redundant duplicates).
+    upsert_history_csv(
+        daily_data,
+        HISTORY_EXTRACTED_DIR / "daily_forecast.csv",
+        dedupe_subset=["Date", "SolarRadiation_kWh_m2", "SolarRadiation_Wh_m2", "Source"],
+        sort_by=["Date", "FetchedAt"],
+    )
+    upsert_history_csv(
+        hourly_data,
+        HISTORY_EXTRACTED_DIR / "hourly_detail.csv",
+        dedupe_subset=["Date", "Time", "SolarRadiation_W_m2", "SolarRadiation_Wh_m2", "Source"],
+        sort_by=["Date", "Time", "FetchedAt"],
+    )
+    # For prognosis we dedupe on all computed fields + config hash (excluding FetchedAt so identical runs don't re-add).
+    upsert_history_csv(
+        prognosis_data,
+        HISTORY_PROGNOSIS_DIR / "battery_prognosis.csv",
+        dedupe_subset=[
+            "Date",
+            "DayName",
+            "SolarRadiation_kWh_m2",
+            "SolarRadiation_Wh_m2",
+            "Source",
+            "PanelCount",
+            "TotalPanelArea_m2",
+            "PerPanelYield_kWh",
+            "TotalYield_kWh",
+            "BatteryCount",
+            "BatteryCapacityTotal_kWh",
+            "TotalChargeRate_kW",
+            "Chargeable_kWh",
+            "ChargePercentage",
+            "ConfigHash",
+        ],
+        sort_by=["Date", "FetchedAt", "ConfigHash"],
+    )
     
     # Show results
     logger.info("\nBattery Charge Prognosis (first 7 days):")
