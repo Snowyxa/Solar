@@ -11,31 +11,28 @@ This project downloads a 15‑day solar radiation forecast (kWh/m²), estimates 
 
 
 ## Installation / Setup
-1) Install Python 3.8+
-2) Install dependencies (run in this project folder):
+1. Install **Python 3.8+** (make sure it's added to PATH).
+2. Install dependencies (run in this project folder):
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Start / Run Commands
-Run the pipeline (downloads forecast + exports CSVs):
+## How to Run
+
+**Run the pipeline** (downloads forecast + exports CSVs + opens GUI):
 
 ```bash
 python main.py
 ```
 
-Run the pipeline without opening the GUI (recommended for daily automation / Task Scheduler):
+**Run headless** (no GUI — recommended for daily automation / Task Scheduler):
 
 ```bash
 python main.py --no-gui
 ```
 
-Open the GUI (edit settings + re-run + view results):
-
-```bash
-python -c "from gui.viewer import launch_gui; launch_gui()"
-```
+> **Tip:** Use the toggle switch to flip between **Latest** results and **History** view.
 
 ## Configuration (what you can change and why)
 All user settings live in `config.yaml` (or use the GUI form). You only change numbers here — no code changes needed.
@@ -67,15 +64,15 @@ Also:
 
 ---
 
-Worked example (defaults in `config.yaml`):
-- Panels: `N_panels = 8`, `A_panel = 1.8 m²`, `η_panel = 0.20` (20% from datasheet), `η_system = 0.85`.
+**Worked example** (based on typical defaults in `config.yaml`):
+- Panels: `N_panels = 7`, `A_panel = 1.8 m²`, `η_panel = 0.20` (20% from datasheet), `η_system = 0.85`.
 - Batteries: `N_batt = 1`, `C_one = 10 kWh`, `P_rate_one = 5 kW`.
 - Forecast for the day: `R = 1.10 kWh/m²`.
 - Per-panel yield: $$Y_{panel} = 1.10 \times 1.8 \times 0.20 \times 0.85 \approx 0.3366\ \text{kWh}$$
-- Total yield: $$Y_{total} = 0.3366 \times 8 \approx 2.6928\ \text{kWh}$$
+- Total yield: $$Y_{total} = 0.3366 \times 7 \approx 2.36\ \text{kWh}$$
 - Battery capacity: $$C_{batt} = 10\ \text{kWh}$$
-- Chargeable: $$E_{charge} = \min(10,\ 5 \times 8,\ 2.6928) = 2.6928\ \text{kWh}$$
-- Charge %: $$\text{Charge\%} = 2.6928 / 10 \times 100 \approx 26.9\%$$
+- Chargeable: $$E_{charge} = \min(10,\ 5 \times 8,\ 2.36) = 2.36\ \text{kWh}$$
+- Charge %: $$\text{Charge\%} = 2.36 / 10 \times 100 \approx 23.6\%$$
 
 What to tweak to see different outcomes:
 - Change `count` for panels or batteries to model larger/smaller systems.
@@ -83,17 +80,17 @@ What to tweak to see different outcomes:
 - Update `efficiency` to match your exact panel datasheet value.
 
 ## Outputs
-- `data/extracted/daily_forecast.csv` — daily solar radiation forecast (parsed/cleaned from the website).
-- `data/extracted/hourly_detail.csv` — hourly solar radiation (parsed/cleaned from the website).
-- `data/prognosis/battery_prognosis.csv` — calculated results (panel/battery counts, yields, chargeable energy, and charge %).
+
+After running, you'll find your results in:
+
+| File | What it contains |
+|------|------------------|
+| `data/extracted/daily_forecast.csv` | Daily solar radiation forecast (parsed from website) |
+| `data/extracted/hourly_detail.csv` | Hourly solar radiation (parsed from website) |
+| `data/prognosis/battery_prognosis.csv` | Calculated results: yields, chargeable energy, and charge % |
 
 ## History (no duplicates / no redundant rows)
 The pipeline also keeps a history of **changes** over time (it won’t keep adding the same row again and again if nothing changed):
 - `data/history/extracted/daily_forecast.csv`
 - `data/history/extracted/hourly_detail.csv`
-- `data/history/prognosis/battery_prognosis.csv` (includes a `ConfigHash` so different system settings can coexist cleanly)
-
-Notes:
-- `data/` is ignored by git (it’s runtime output).
-- If you still have `data/exports/`, `data/raw/` or `data/processed/` in your folder, those are **legacy leftovers** from earlier versions/experiments and can be deleted.
-
+- `data/history/prognosis/battery_prognosis.csv` — includes a `ConfigHash` so different system settings can coexist cleanly
