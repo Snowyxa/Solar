@@ -13,12 +13,12 @@ import json
 from .config import load_config
 from .storage import write_snapshot_csv, upsert_history_csv
 
-# Setup logging
+# Setup logging (overwrite each run - history is in CSV files)
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
+    format='%(asctime)s - %(message)s',
     handlers=[
-        logging.FileHandler('solar_pipeline.log'),
+        logging.FileHandler('solar_pipeline.log', mode='w'),
         logging.StreamHandler()
     ]
 )
