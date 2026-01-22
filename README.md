@@ -1,96 +1,46 @@
-# Solar Pipeline
+# Solar Pipeline (CLI Version)
 
-Beginner-friendly solar forecast → energy estimate → battery charge prognosis.
+Minimal, portable solar forecast → energy estimate → battery charge prognosis.
 
-This project downloads a 15‑day solar radiation forecast (kWh/m²), estimates how much energy your solar panels could produce (kWh), then estimates how much of that could charge your batteries.
+No GUI — fast, efficient, and easy to automate.
 
 ## Project Overview
-- Pulls solar radiation forecast (daily + hourly) from tutiempo.net.
-- Calculates per-panel and total system yield, plus chargeable energy for your batteries.
-- Lets you change key numbers (panel count, efficiency from datasheet, battery count/capacity) in one place or via a GUI form.
+- Pulls solar radiation forecast (daily + hourly) from tutiempo.net
+- Calculates per-panel and total system yield, plus chargeable energy for your batteries
+- Outputs CSV files for further analysis
 
+## Installation
+```bash
+pip install -r requirements.txt
+```
 
-## Installation / Setup
-1. Install **Python 3.8+** (make sure it's added to PATH).
-2. Install dependencies (run in this project folder):
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## How to Run
-
-**Run the pipeline** (downloads forecast + exports CSVs + opens GUI):
-
+## Usage
 ```bash
 python main.py
 ```
 
-**Run headless** (no GUI — recommended for daily automation / Task Scheduler):
+Results are saved to `data/` folder as CSV files.
 
-```bash
-python main.py --no-gui
-```
+## Configuration
+Edit `config.yaml` to adjust your system parameters:
 
-> **Tip:** Use the toggle switch to flip between **Latest** results and **History** view.
-
-## Configuration (what you can change and why)
-All user settings live in `config.yaml` (or use the GUI form). You only change numbers here — no code changes needed.
-- `solar_panel.count` — number of panels.
-- `solar_panel.efficiency` — **Research your panel model and get the exact efficiency from the manufacturer datasheet** (look for "Module Efficiency" at STC conditions). Enter as decimal (0.20 = 20%) or percentage (20).
-- `solar_panel.area_per_panel_m2` — size of one panel.
-- `battery.count` — how many batteries.
-- `battery.capacity_kwh_per_battery` — storage per battery (kWh).
-- `battery.max_charge_rate_kw_per_battery` — charge speed per battery (kW).
-- `system.efficiency` — inverter/wiring efficiency (fraction).
-
-## Prognosis / Calculations (with math examples)
-### Key ideas (plain language)
-- Solar radiation is shown as **kWh per square meter** (kWh/m²).
-- Your panels turn a fraction of that sunlight into electricity (efficiency).
-- More panels → more total area → more energy.
-- Batteries have a total storage limit (kWh) and a maximum charge speed (kW).
-
-### Formulas (per day)
-- Per-panel yield: $$Y_{panel} = R_{kWh/m^2} \times A_{panel} \times \eta_{panel} \times \eta_{system}$$
-- Total yield (all panels): $$Y_{total} = Y_{panel} \times N_{panels}$$
-- Battery capacity (all batteries): $$C_{batt} = C_{one} \times N_{batt}$$
-- Max chargeable energy (8h charge window): $$E_{charge} = \min\big(C_{batt},\ (P_{rate\_one} \times N_{batt}) \times 8,\ Y_{total}\big)$$
-- Charge percent: $$\text{Charge\%} = \frac{E_{charge}}{C_{batt}} \times 100$$
-
-Also:
-- Battery storage total: $$\text{Storage}_{total} = \text{capacity\_kwh\_per\_battery} \times N_{batt}$$
-
-
----
-
-**Worked example** (based on typical defaults in `config.yaml`):
-- Panels: `N_panels = 7`, `A_panel = 1.8 m²`, `η_panel = 0.20` (20% from datasheet), `η_system = 0.85`.
-- Batteries: `N_batt = 1`, `C_one = 10 kWh`, `P_rate_one = 5 kW`.
-- Forecast for the day: `R = 1.10 kWh/m²`.
-- Per-panel yield: $$Y_{panel} = 1.10 \times 1.8 \times 0.20 \times 0.85 \approx 0.3366\ \text{kWh}$$
-- Total yield: $$Y_{total} = 0.3366 \times 7 \approx 2.36\ \text{kWh}$$
-- Battery capacity: $$C_{batt} = 10\ \text{kWh}$$
-- Chargeable: $$E_{charge} = \min(10,\ 5 \times 8,\ 2.36) = 2.36\ \text{kWh}$$
-- Charge %: $$\text{Charge\%} = 2.36 / 10 \times 100 \approx 23.6\%$$
-
-What to tweak to see different outcomes:
-- Change `count` for panels or batteries to model larger/smaller systems.
-- Adjust `capacity_kwh_per_battery` and `max_charge_rate_kw_per_battery` to explore storage and charge-speed limits.
-- Update `efficiency` to match your exact panel datasheet value.
+| Setting | Description |
+|---------|-------------|
+| `solar_panel.count` | Number of panels |
+| `solar_panel.efficiency` | Panel efficiency (0.20 = 20%) |
+| `solar_panel.area_per_panel_m2` | Size of one panel (m²) |
+| `battery.count` | Number of batteries |
+| `battery.capacity_kwh_per_battery` | Storage per battery (kWh) |
+| `battery.max_charge_rate_kw_per_battery` | Charge speed per battery (kW) |
+| `system.efficiency` | Inverter/wiring efficiency |
 
 ## Outputs
 
-After running, you'll find your results in:
+| File | Description |
+|------|-------------|
+| `data/solar_report.html` | **Visual report** - open in browser |
+| `data/extracted/daily_forecast.csv` | Daily solar radiation forecast |
+| `data/extracted/hourly_detail.csv` | Hourly solar radiation |
+| `data/prognosis/battery_prognosis.csv` | Calculated yields, chargeable energy, charge % |
 
-| File | What it contains |
-|------|------------------|
-| `data/extracted/daily_forecast.csv` | Daily solar radiation forecast (parsed from website) |
-| `data/extracted/hourly_detail.csv` | Hourly solar radiation (parsed from website) |
-| `data/prognosis/battery_prognosis.csv` | Calculated results: yields, chargeable energy, and charge % |
-
-## History (no duplicates / no redundant rows)
-The pipeline also keeps a history of **changes** over time (it won’t keep adding the same row again and again if nothing changed):
-- `data/history/extracted/daily_forecast.csv`
-- `data/history/extracted/hourly_detail.csv`
-- `data/history/prognosis/battery_prognosis.csv` — includes a `ConfigHash` so different system settings can coexist cleanly
+History files (deduplicated) are stored in `data/history/`.

@@ -1,7 +1,4 @@
-"""Configuration management for Solar Pipeline.
-
-All user-facing knobs live here so beginners can change numbers instead of logic.
-"""
+"""Configuration management for Solar Pipeline."""
 
 import yaml
 from pathlib import Path
@@ -9,8 +6,6 @@ from typing import Dict, Any
 
 CONFIG_FILE = Path("config.yaml")
 
-# Default, beginner-friendly settings. Users change these either in config.yaml
-# or via the GUI form (which writes the same keys).
 DEFAULT_CONFIG = {
     'location': 'Deinze',
     'base_url': 'https://en.tutiempo.net',
@@ -19,17 +14,17 @@ DEFAULT_CONFIG = {
     'retry_delay': 2,
     'timeout': 10,
     'solar_panel': {
-        'count': 8,                    # How many panels are installed
-        'efficiency': 0.20,            # Panel efficiency from manufacturer datasheet (fraction)
-        'area_per_panel_m2': 1.8,      # Size of ONE panel in square meters
+        'count': 8,
+        'efficiency': 0.20,
+        'area_per_panel_m2': 1.8,
     },
     'system': {
-        'efficiency': 0.85,            # Wiring/inverter losses (fraction)
+        'efficiency': 0.85,
     },
     'battery': {
-        'count': 1,                           # Number of batteries
-        'capacity_kwh_per_battery': 10.0,     # Storage per battery (kWh)
-        'max_charge_rate_kw_per_battery': 5.0 # How fast one battery can charge (kW)
+        'count': 1,
+        'capacity_kwh_per_battery': 10.0,
+        'max_charge_rate_kw_per_battery': 5.0
     }
 }
 

@@ -33,6 +33,149 @@ HISTORY_EXTRACTED_DIR = HISTORY_DIR / "extracted"
 HISTORY_PROGNOSIS_DIR = HISTORY_DIR / "prognosis"
 # Legacy folder name used by older versions (kept for compatibility).
 EXPORT_DIR = DATA_DIR / "exports"
+REPORT_FILE = DATA_DIR / "solar_report.html"
+
+
+def generate_html_report(prognosis_data, config, location):
+    """Generate a nice HTML report file."""
+    panel_cfg = config.get('solar_panel', {})
+    battery_cfg = config.get('battery', {})
+    system_eff = config.get('system', {}).get('efficiency', 0.85)
+    
+    total_production = sum(r['Production_kWh'] for r in prognosis_data)
+    avg_charge = sum(r['ChargePercentage'] for r in prognosis_data) / len(prognosis_data)
+    best_day = max(prognosis_data, key=lambda x: x['ChargePercentage'])
+    
+    # Build table rows
+    rows_html = ""
+    for r in prognosis_data:
+        charge_pct = r['ChargePercentage']
+        if charge_pct >= 50:
+            color = "#4CAF50"  # green
+        elif charge_pct >= 25:
+            color = "#FF9800"  # orange
+        else:
+            color = "#f44336"  # red
+        
+        rows_html += f"""
+        <tr>
+            <td>{r['Date']}</td>
+            <td>{r['DayName']}</td>
+            <td>{r['SolarRadiation_kWh_m2']:.2f}</td>
+            <td>{r['Production_kWh']:.2f}</td>
+            <td style="color: {color}; font-weight: bold;">{charge_pct:.1f}%</td>
+            <td><div style="background: linear-gradient(90deg, {color} {charge_pct}%, #333 {charge_pct}%); height: 20px; border-radius: 4px;"></div></td>
+        </tr>"""
+    
+    html = f"""<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Solar Forecast - {location}</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{ 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e; 
+            color: #eee; 
+            padding: 20px;
+            min-height: 100vh;
+        }}
+        .container {{ max-width: 1000px; margin: 0 auto; }}
+        h1 {{ 
+            color: #ffd700; 
+            margin-bottom: 5px;
+            font-size: 28px;
+        }}
+        .subtitle {{ color: #888; margin-bottom: 20px; }}
+        .stats {{ 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin-bottom: 25px; 
+        }}
+        .stat {{ 
+            background: #252540; 
+            padding: 15px; 
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
+        }}
+        .stat-label {{ color: #888; font-size: 12px; text-transform: uppercase; }}
+        .stat-value {{ font-size: 24px; font-weight: bold; color: #fff; }}
+        .stat-detail {{ font-size: 12px; color: #666; }}
+        table {{ 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: #252540;
+            border-radius: 8px;
+            overflow: hidden;
+        }}
+        th {{ 
+            background: #1a1a2e; 
+            padding: 12px 8px; 
+            text-align: left;
+            color: #ffd700;
+            font-weight: 600;
+        }}
+        td {{ padding: 10px 8px; border-bottom: 1px solid #333; }}
+        tr:hover {{ background: #2a2a4a; }}
+        .bar-col {{ width: 150px; }}
+        .footer {{ margin-top: 20px; color: #666; font-size: 12px; text-align: center; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>☀️ Solar Forecast - {location}</h1>
+        <p class="subtitle">Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')} | Forecast: {prognosis_data[0]['Date']} to {prognosis_data[-1]['Date']}</p>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-label">System</div>
+                <div class="stat-value">{panel_cfg.get('count', 1)} Panels</div>
+                <div class="stat-detail">{panel_cfg.get('area_per_panel_m2', 1.8)}m² @ {int(panel_cfg.get('efficiency', 0.2)*100)}% eff</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Battery</div>
+                <div class="stat-value">{battery_cfg.get('capacity_kwh_per_battery', 10) * battery_cfg.get('count', 1):.0f} kWh</div>
+                <div class="stat-detail">{battery_cfg.get('count', 1)}x {battery_cfg.get('capacity_kwh_per_battery', 10)} kWh</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Total Production ({len(prognosis_data)} days)</div>
+                <div class="stat-value">{total_production:.1f} kWh</div>
+                <div class="stat-detail">Avg {total_production/len(prognosis_data):.1f} kWh/day</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">Avg Charge</div>
+                <div class="stat-value">{avg_charge:.1f}%</div>
+                <div class="stat-detail">Best: {best_day['DayName'][:3]} {best_day['ChargePercentage']:.0f}%</div>
+            </div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Day</th>
+                    <th>Solar (kWh/m²)</th>
+                    <th>Production (kWh)</th>
+                    <th>Charge %</th>
+                    <th class="bar-col">Battery</th>
+                </tr>
+            </thead>
+            <tbody>
+                {rows_html}
+            </tbody>
+        </table>
+        
+        <p class="footer">Solar Pipeline CLI • System efficiency: {int(system_eff*100)}%</p>
+    </div>
+</body>
+</html>"""
+    
+    REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
+    REPORT_FILE.write_text(html, encoding='utf-8')
+    return REPORT_FILE
+
 
 def _config_hash(config: dict) -> str:
     """Stable hash for the parts of config that affect prognosis calculations."""
@@ -50,24 +193,19 @@ def fetch_html(url, max_retries, retry_delay, timeout):
     """Fetch HTML with retry logic"""
     for attempt in range(1, max_retries + 1):
         try:
-            logger.info(f"Fetching: {url} (attempt {attempt}/{max_retries})")
             response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, timeout=timeout)
             response.raise_for_status()
-            logger.info(f"Success ({len(response.text)} bytes)")
             return response.text
         except requests.RequestException as e:
-            logger.warning(f"Attempt {attempt} failed: {e}")
             if attempt < max_retries:
                 time.sleep(retry_delay * attempt)
-    
-    logger.error(f"All {max_retries} attempts failed")
+            else:
+                logger.error(f"Failed to fetch data after {max_retries} attempts: {e}")
     return None
 
 
 def find_url(location, base_url, fallback_url):
     """Find solar radiation URL for location"""
-    logger.info(f"Finding URL for {location}")
-    
     location_lower = location.lower().replace(' ', '-')
     urls = [
         f"{base_url}/solar-radiation/{location_lower}.html",
@@ -296,18 +434,9 @@ def extract_forecast(html):
                 # Recalculate day name from date to ensure accuracy
                 record['DayName'] = date_obj.strftime('%A')
                 
-                # Log if dates seem out of order
-                if i > 0:
-                    prev_date = datetime.strptime(unique_daily_data[i-1]['Date'], '%Y-%m-%d')
-                    days_diff = (date_obj - prev_date).days
-                    if days_diff != 1:
-                        logger.warning(f"Date gap detected: {unique_daily_data[i-1]['Date']} to {record['Date']} ({days_diff} days)")
-            except ValueError as e:
-                logger.error(f"Invalid date format in record: {record['Date']} - {e}")
+            except ValueError:
+                pass
     
-    logger.info(f"Extracted {len(unique_daily_data)} unique daily records and {len(hourly_data)} hourly records")
-    if unique_daily_data:
-        logger.info(f"Date range: {unique_daily_data[0]['Date']} ({unique_daily_data[0]['DayName']}) to {unique_daily_data[-1]['Date']} ({unique_daily_data[-1]['DayName']})")
     return unique_daily_data, hourly_data
 
 
@@ -342,26 +471,22 @@ def calculate_battery_prognosis(daily_data, config):
     for record in daily_data:
         solar_rad = record['SolarRadiation_kWh_m2']
         
-        # Per-panel yield for the day
-        per_panel_yield = solar_rad * per_panel_yield_factor
-        # Fleet-wide yield = per-panel yield * number of panels
-        total_yield = per_panel_yield * panel_count
+        # Per-panel production for the day
+        per_panel_prod = solar_rad * per_panel_yield_factor
+        # Total production = per-panel * number of panels
+        total_production = per_panel_prod * panel_count
         
-        # Battery chargeable energy capped by capacity and charge rate (assume ~8h effective charging)
-        chargeable = min(total_battery_capacity, total_charge_rate_kw * 8, total_yield)
-        charge_pct = (chargeable / total_battery_capacity * 100) if total_battery_capacity > 0 else 0
+        # Charge percentage (capped by battery capacity)
+        charge_pct = (min(total_production, total_battery_capacity) / total_battery_capacity * 100) if total_battery_capacity > 0 else 0
         
         prognosis.append({
             **record,
             'PanelCount': panel_count,
             'TotalPanelArea_m2': round(total_panel_area, 3),
-            'PerPanelYield_kWh': round(per_panel_yield, 6),
-            'TotalYield_kWh': round(total_yield, 6),
+            'Production_kWh': round(total_production, 2),
             'BatteryCount': battery_count,
-            'BatteryCapacityTotal_kWh': round(total_battery_capacity, 6),
-            'TotalChargeRate_kW': round(total_charge_rate_kw, 3),
-            'Chargeable_kWh': round(chargeable, 6),
-            'ChargePercentage': round(charge_pct, 2),
+            'BatteryCapacity_kWh': round(total_battery_capacity, 1),
+            'ChargePercentage': round(charge_pct, 1),
         })
     
     return prognosis
@@ -372,26 +497,27 @@ def run_pipeline(config=None):
     if config is None:
         config = load_config()
     
-    logger.info("=" * 60)
-    logger.info("SOLAR PIPELINE - COMPLETE WORKFLOW")
-    logger.info("=" * 60)
+    location = config['location']
+    logger.info(f"")
+    logger.info(f"Solar Pipeline - {location}")
+    logger.info("=" * 50)
     
     # Find URL
-    url = find_url(config['location'], config['base_url'], config['fallback_url'])
+    url = find_url(location, config['base_url'], config['fallback_url'])
     if not url:
-        logger.error("Could not find URL")
+        logger.error("Could not find URL for location")
         return False
     
     # Fetch HTML
     html = fetch_html(url, config['max_retries'], config['retry_delay'], config['timeout'])
     if not html:
-        logger.error("Could not fetch HTML")
+        logger.error("Could not fetch forecast data")
         return False
     
     # Extract forecast
     daily_data, hourly_data = extract_forecast(html)
     if not daily_data:
-        logger.warning("No data extracted")
+        logger.error("No forecast data found")
         return False
     
     # Calculate prognosis
@@ -430,12 +556,9 @@ def run_pipeline(config=None):
             "Source",
             "PanelCount",
             "TotalPanelArea_m2",
-            "PerPanelYield_kWh",
-            "TotalYield_kWh",
+            "Production_kWh",
             "BatteryCount",
-            "BatteryCapacityTotal_kWh",
-            "TotalChargeRate_kW",
-            "Chargeable_kWh",
+            "BatteryCapacity_kWh",
             "ChargePercentage",
             "ConfigHash",
         ],
@@ -443,14 +566,31 @@ def run_pipeline(config=None):
     )
     
     # Show results
-    logger.info("\nBattery Charge Prognosis (first 7 days):")
-    logger.info("-" * 60)
-    for record in prognosis_data[:7]:
-        logger.info(f"{record['Date']}: {record['SolarRadiation_kWh_m2']:.3f} kWh/m2 -> "
-                   f"{record['ChargePercentage']:.1f}% charge")
+    panel_cfg = config.get('solar_panel', {})
+    battery_cfg = config.get('battery', {})
     
-    logger.info("=" * 60)
-    logger.info("PIPELINE COMPLETED")
-    logger.info("=" * 60)
+    logger.info(f"")
+    logger.info(f"System: {panel_cfg.get('count', 1)} panels | {battery_cfg.get('count', 1)}x {battery_cfg.get('capacity_kwh_per_battery', 10)} kWh battery")
+    logger.info(f"Forecast: {prognosis_data[0]['Date']} to {prognosis_data[-1]['Date']} ({len(prognosis_data)} days)")
+    logger.info("-" * 50)
+    logger.info(f"{'Date':<12} {'Day':<10} {'Solar':>8} {'Prod':>8} {'Charge':>8}")
+    logger.info(f"{'':<12} {'':<10} {'kWh/m²':>8} {'kWh':>8} {'%':>8}")
+    logger.info("-" * 50)
+    
+    total_production = 0
+    for record in prognosis_data:
+        total_production += record['Production_kWh']
+        logger.info(f"{record['Date']:<12} {record['DayName']:<10} {record['SolarRadiation_kWh_m2']:>8.2f} {record['Production_kWh']:>8.2f} {record['ChargePercentage']:>7.1f}%")
+    
+    logger.info("-" * 50)
+    avg_charge = sum(r['ChargePercentage'] for r in prognosis_data) / len(prognosis_data)
+    best_day = max(prognosis_data, key=lambda x: x['ChargePercentage'])
+    logger.info(f"Total production: {total_production:.1f} kWh | Avg charge: {avg_charge:.1f}%")
+    logger.info(f"Best day: {best_day['Date']} ({best_day['DayName']}) - {best_day['ChargePercentage']:.1f}%")
+    
+    # Generate HTML report
+    report_path = generate_html_report(prognosis_data, config, location)
+    logger.info(f"Report: {report_path}")
+    logger.info("=" * 50)
     
     return True
